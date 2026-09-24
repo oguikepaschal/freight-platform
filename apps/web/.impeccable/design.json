@@ -1,0 +1,427 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-24T09:47:38Z",
+  "title": "Design System: Meridian Freight (apps/web)",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#10151b"
+      },
+      "steel": {
+        "role": "neutral",
+        "displayName": "Steel",
+        "canonical": "#191f27"
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "#2a323c"
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "#5f6b7a",
+        "tonalRamp": [
+          "#5f6b7a",
+          "#8b97a6"
+        ]
+      },
+      "mist-on-dark": {
+        "role": "neutral",
+        "displayName": "Mist on dark",
+        "canonical": "#8b97a6"
+      },
+      "fog": {
+        "role": "neutral",
+        "displayName": "Fog",
+        "canonical": "#dde2e8"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f7f8fa"
+      },
+      "chalk": {
+        "role": "neutral",
+        "displayName": "Chalk",
+        "canonical": "#ffffff"
+      },
+      "oxide": {
+        "role": "primary",
+        "displayName": "Oxide",
+        "canonical": "#b5562b",
+        "tonalRamp": [
+          "#a34a22",
+          "#b5562b",
+          "#e08a5a"
+        ]
+      },
+      "oxide-on-light": {
+        "role": "primary",
+        "displayName": "Oxide on light",
+        "canonical": "#a34a22"
+      },
+      "oxide-on-dark": {
+        "role": "primary",
+        "displayName": "Oxide on dark",
+        "canonical": "#e08a5a"
+      },
+      "transit": {
+        "role": "secondary",
+        "displayName": "Transit",
+        "canonical": "#2f6bd0",
+        "tonalRamp": [
+          "#2457ac",
+          "#2f6bd0",
+          "#7ba6f0"
+        ]
+      },
+      "transit-on-light": {
+        "role": "secondary",
+        "displayName": "Transit on light",
+        "canonical": "#2457ac"
+      },
+      "transit-on-dark": {
+        "role": "secondary",
+        "displayName": "Transit on dark",
+        "canonical": "#7ba6f0"
+      },
+      "delivered": {
+        "role": "secondary",
+        "displayName": "Delivered",
+        "canonical": "#3e8f73",
+        "tonalRamp": [
+          "#2e6e58",
+          "#3e8f73",
+          "#6bc3a4"
+        ]
+      },
+      "delivered-on-light": {
+        "role": "secondary",
+        "displayName": "Delivered on light",
+        "canonical": "#2e6e58"
+      },
+      "delivered-on-dark": {
+        "role": "secondary",
+        "displayName": "Delivered on dark",
+        "canonical": "#6bc3a4"
+      },
+      "exception": {
+        "role": "secondary",
+        "displayName": "Exception",
+        "canonical": "#c4462f",
+        "tonalRamp": [
+          "#c4462f",
+          "#d9604a"
+        ]
+      },
+      "exception-on-dark": {
+        "role": "secondary",
+        "displayName": "Exception on dark",
+        "canonical": "#d9604a"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (text-4xl)",
+        "purpose": "Hero display; Archivo wdth 112, 600."
+      },
+      "headline-lg": {
+        "displayName": "Headline large (text-3xl)",
+        "purpose": "Hero subheads."
+      },
+      "headline": {
+        "displayName": "Headline (text-2xl)",
+        "purpose": "Page and section headings."
+      },
+      "title-lg": {
+        "displayName": "Title large (text-xl)",
+        "purpose": "Section headings."
+      },
+      "title": {
+        "displayName": "Title (text-lg)",
+        "purpose": "Card titles, wordmark, lead paragraphs."
+      },
+      "body": {
+        "displayName": "Body (text-base)",
+        "purpose": "Default body copy in Plex Sans."
+      },
+      "label": {
+        "displayName": "Label (text-sm)",
+        "purpose": "Form labels, secondary UI text, nav, button text."
+      },
+      "caption": {
+        "displayName": "Caption (text-xs)",
+        "purpose": "Timestamps, meta, table captions."
+      },
+      "data": {
+        "displayName": "Data (Plex Mono)",
+        "purpose": "Reference numbers, coordinates, timestamps, stat figures; tabular numerals."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-sm (light)",
+        "value": "0 1px 2px color-mix(in srgb, var(--palette-ink) 6%, transparent)",
+        "purpose": "Cards, primary button, ManifestStrip."
+      },
+      {
+        "name": "shadow-md (light)",
+        "value": "0 6px 16px color-mix(in srgb, var(--palette-ink) 10%, transparent), 0 1px 2px color-mix(in srgb, var(--palette-ink) 6%, transparent)",
+        "purpose": "Mid-level raised surfaces."
+      },
+      {
+        "name": "shadow-lg (light)",
+        "value": "0 16px 40px color-mix(in srgb, var(--palette-ink) 16%, transparent), 0 2px 6px color-mix(in srgb, var(--palette-ink) 8%, transparent)",
+        "purpose": "Dropdown and search popovers."
+      },
+      {
+        "name": "shadow-sm (dark)",
+        "value": "0 1px 2px color-mix(in srgb, var(--palette-paper) 6%, transparent)",
+        "purpose": "Light-colored glow inside data-mode=dark."
+      },
+      {
+        "name": "shadow-md (dark)",
+        "value": "0 6px 16px color-mix(in srgb, var(--palette-paper) 10%, transparent), 0 1px 2px color-mix(in srgb, var(--palette-paper) 6%, transparent)",
+        "purpose": "Dark-mode glow, mid level."
+      },
+      {
+        "name": "shadow-lg (dark)",
+        "value": "0 16px 40px color-mix(in srgb, var(--palette-paper) 16%, transparent), 0 2px 6px color-mix(in srgb, var(--palette-paper) 8%, transparent)",
+        "purpose": "Dark-mode glow, top level."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "purpose": "Precise settle, no overshoot. Default easing for state transitions."
+      },
+      {
+        "name": "duration-fast",
+        "value": "120ms",
+        "purpose": "Press feedback."
+      },
+      {
+        "name": "duration-base",
+        "value": "180ms",
+        "purpose": "Hover and focus-ring transitions."
+      },
+      {
+        "name": "animate-pulse-dot",
+        "value": "pulse-dot 2.6s ease-in-out infinite",
+        "purpose": "Live-status dot (opacity 1 to 0.55, scale 1 to 0.82). Not covered by CSS gating alone: reset.css's blanket duration override handles CSS-only cases; components (ManifestStrip) also gate it with a JS prefers-reduced-motion check."
+      },
+      {
+        "name": "animate-skeleton-shimmer",
+        "value": "skeleton-shimmer 1.6s ease-in-out infinite",
+        "purpose": "Loading skeleton sweep over --color-border. Table gates it with a JS prefers-reduced-motion check and falls back to a flat --color-border fill."
+      },
+      {
+        "name": "lane-ticker-track",
+        "value": "marquee-scroll linear; animation-timeline: scroll(root)",
+        "purpose": "LaneTicker translation bound to scroll position. Gated in CSS by @media (prefers-reduced-motion: no-preference) and @supports (animation-timeline: scroll()); otherwise a static strip."
+      },
+      {
+        "name": "reduced-motion override",
+        "value": "animation-duration 0.01ms, animation-iteration-count 1, transition-duration 0.01ms, scroll-behavior auto (under prefers-reduced-motion: reduce)",
+        "purpose": "CSS-level blanket in reset.css; zeroes time-based animation only, not scroll-bound animation or JS state churn."
+      }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "custom",
+      "refersTo": "button-primary",
+      "description": "Oxide-solid fill with chalk text; the one primary action per view.",
+      "html": "<button class=\"ds-btn-primary\">Talk to a specialist</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-tight); height: 2.5rem; padding: 0 var(--spacing-comfortable); border: 0; border-radius: var(--radius-md); background: var(--color-oxide-solid); color: var(--color-chalk); font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500; box-shadow: var(--shadow-sm); cursor: pointer; transition: background-color 180ms cubic-bezier(0.2, 0, 0, 1), box-shadow 180ms cubic-bezier(0.2, 0, 0, 1), transform 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-btn-primary:hover { filter: brightness(1.05); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-transit); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "custom",
+      "refersTo": "button-secondary",
+      "description": "Surface fill with a hairline border; supporting action.",
+      "html": "<button class=\"ds-btn-secondary\">Find a location</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; height: 2.5rem; padding: 0 var(--spacing-comfortable); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-foreground); font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500; cursor: pointer; transition: border-color 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-btn-secondary:hover { border-color: var(--color-mist); } .ds-btn-secondary:active { transform: scale(0.98); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-transit); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "custom",
+      "refersTo": "button-ghost",
+      "description": "Transparent tertiary action that fills with surface on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Customer portal</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; height: 2.5rem; padding: 0 var(--spacing-comfortable); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--color-foreground); font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500; cursor: pointer; transition: background-color 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-btn-ghost:hover { background: var(--color-surface); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--color-transit); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labelled field with a hairline border that shifts to transit on focus.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-label\" for=\"ds-in\">Origin</label><input class=\"ds-input\" id=\"ds-in\" placeholder=\"City or port\" /></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: var(--spacing-tight); } .ds-label { font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500; color: var(--color-foreground); } .ds-input { height: 2.5rem; padding: 0 var(--spacing-cozy); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-foreground); font-family: var(--font-sans); font-size: var(--text-sm); transition: border-color 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-input::placeholder { color: var(--color-muted); } .ds-input:focus { border-color: var(--color-transit); } .ds-input:focus-visible { outline: 2px solid var(--color-transit); outline-offset: 2px; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Pill with a state dot; variants map to real shipment states.",
+      "html": "<span class=\"ds-badge\"><span class=\"ds-badge-dot\"></span>In transit</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: var(--spacing-tight); box-sizing: border-box; height: 1.25rem; padding: 0 var(--spacing-snug); border: 1px solid color-mix(in srgb, var(--color-transit) 30%, transparent); border-radius: var(--radius-full); background: var(--color-transit-soft); color: var(--color-transit); font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 500; line-height: 1; } .ds-badge-dot { width: 0.375rem; height: 0.375rem; border-radius: var(--radius-full); background: var(--color-transit); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Chalk surface, hairline border, large radius, soft shadow.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Sea freight</h3><p class=\"ds-card-body\">FCL and LCL between major ports.</p></div>",
+      "css": ".ds-card { padding: var(--spacing-comfortable); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-sm); transition: border-color 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-card:hover { border-color: var(--color-mist); } .ds-card-title { margin: 0 0 var(--spacing-tight); font-family: var(--font-display); font-variation-settings: 'wdth' 112; font-size: var(--text-lg); font-weight: 600; letter-spacing: -0.015em; color: var(--color-foreground); } .ds-card-body { margin: 0; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--color-muted); }"
+    },
+    {
+      "name": "Stat Band",
+      "kind": "custom",
+      "refersTo": "typography.data",
+      "description": "Full-bleed bordered row of mono headline figures with muted labels.",
+      "html": "<div class=\"ds-stats\"><div class=\"ds-stat\"><span class=\"ds-stat-value\">148</span><span class=\"ds-stat-label\">Offices in 46 countries</span></div></div>",
+      "css": ".ds-stats { border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); background: var(--color-background); padding: 0 var(--spacing-comfortable); } .ds-stat { display: flex; flex-direction: column; gap: var(--spacing-tight); padding: var(--spacing-comfortable) 0; } .ds-stat-value { font-family: var(--font-mono); font-size: var(--text-4xl); line-height: var(--text-4xl--line-height); font-weight: 600; color: var(--color-foreground); } .ds-stat-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 500; color: var(--color-muted); }"
+    },
+    {
+      "name": "Manifest Row",
+      "kind": "custom",
+      "refersTo": "typography.data",
+      "description": "Tracking-feed row: state dot, mono reference, coordinates, timestamp. Dot pulse is gated by a JS reduced-motion check in the component.",
+      "html": "<div class=\"ds-manifest\"><span class=\"ds-manifest-dot\"></span><span class=\"ds-manifest-status\">In transit</span><span class=\"ds-manifest-ref\">FR-48213-NL</span><span class=\"ds-manifest-meta\">51.92°N 4.48°E</span></div>",
+      "css": ".ds-manifest { display: flex; align-items: center; gap: var(--spacing-tight); padding: var(--spacing-snug); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-sm); } .ds-manifest-dot { width: 0.375rem; height: 0.375rem; border-radius: var(--radius-full); background: var(--color-transit); animation: var(--animate-pulse-dot); } .ds-manifest-status { font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 500; color: var(--color-transit); } .ds-manifest-ref { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 500; color: var(--color-foreground); } .ds-manifest-meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); }"
+    },
+    {
+      "name": "Textarea",
+      "kind": "input",
+      "refersTo": "textarea",
+      "description": "Multi-line sibling of the text input: same hairline border, transit focus, 8rem minimum height.",
+      "html": "<div class=\"ds-ta-field\"><label class=\"ds-ta-label\" for=\"ds-ta\">Message</label><textarea class=\"ds-textarea\" id=\"ds-ta\" placeholder=\"Tell us about the shipment\"></textarea></div>",
+      "css": ".ds-ta-field { display: flex; flex-direction: column; gap: var(--spacing-tight); } .ds-ta-label { font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500; color: var(--color-foreground); } .ds-textarea { min-height: 8rem; padding: var(--spacing-snug) var(--spacing-cozy); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-foreground); font-family: var(--font-sans); font-size: var(--text-sm); transition: border-color 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-textarea::placeholder { color: var(--color-muted); } .ds-textarea:focus { border-color: var(--color-transit); } .ds-textarea:focus-visible { outline: 2px solid var(--color-transit); outline-offset: 2px; }"
+    },
+    {
+      "name": "Footer",
+      "kind": "nav",
+      "refersTo": "footer",
+      "description": "Surface band with a hairline top border: a link column, then a hairline-separated wordmark and legal line.",
+      "html": "<footer class=\"ds-footer\"><div class=\"ds-footer-inner\"><nav class=\"ds-footer-col\" aria-label=\"Company\"><h2 class=\"ds-footer-title\">Company</h2><ul class=\"ds-footer-links\"><li><a class=\"ds-footer-link\" href=\"#\">About</a></li><li><a class=\"ds-footer-link\" href=\"#\">Careers</a></li></ul></nav><div class=\"ds-footer-bar\"><span class=\"ds-footer-brand\">Meridian Freight</span><p class=\"ds-footer-legal\">&copy; 2026 Meridian Freight. All rights reserved.</p></div></div></footer>",
+      "css": ".ds-footer { border-top: 1px solid var(--color-border); background: var(--color-surface); } .ds-footer-inner { display: flex; flex-direction: column; gap: var(--spacing-loose); max-width: 72rem; margin: 0 auto; padding: var(--spacing-loose) var(--spacing-comfortable); } .ds-footer-col { display: flex; flex-direction: column; gap: var(--spacing-tight); } .ds-footer-title { margin: 0; font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.025em; text-transform: uppercase; color: var(--color-muted); } .ds-footer-links { display: flex; flex-direction: column; gap: var(--spacing-tight); margin: 0; padding: 0; list-style: none; } .ds-footer-link { font-family: var(--font-sans); font-size: var(--text-sm); color: var(--color-foreground); text-decoration: none; transition: color 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-footer-link:hover { color: var(--color-oxide); } .ds-footer-link:focus-visible { outline: 2px solid var(--color-transit); outline-offset: 2px; } .ds-footer-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-tight); padding-top: var(--spacing-comfortable); border-top: 1px solid var(--color-border); } .ds-footer-brand { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 600; color: var(--color-foreground); } .ds-footer-legal { margin: 0; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); }"
+    },
+    {
+      "name": "Logo Strip",
+      "kind": "custom",
+      "refersTo": "typography.display",
+      "description": "Placeholder logotypes: a geometric glyph plus the name in Archivo, all one accent. Resting mist on hover-capable pointers, accent on hover or focus.",
+      "html": "<ul class=\"ds-logos\"><li><svg class=\"ds-logo\" role=\"img\" aria-label=\"Logotype one\" viewBox=\"0 0 260 44\" fill=\"currentColor\"><path d=\"M4 4 L14 12 L4 20 L8.5 20 L18.5 12 L8.5 4 Z\" transform=\"translate(0 10)\"></path><text x=\"36\" y=\"29\" font-size=\"20\" style=\"font-family: var(--font-display); font-weight: 600\">Logotype</text></svg></li><li><svg class=\"ds-logo\" role=\"img\" aria-label=\"Logotype two\" viewBox=\"0 0 260 44\" fill=\"currentColor\"><path d=\"M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z\" transform=\"translate(0 10)\"></path><text x=\"36\" y=\"29\" font-size=\"20\" style=\"font-family: var(--font-display); font-weight: 600\">Logotype</text></svg></li></ul>",
+      "css": ".ds-logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-loose) var(--spacing-comfortable); margin: 0; padding: 0; list-style: none; color: var(--color-oxide); transition: color 180ms cubic-bezier(0.2, 0, 0, 1); } @media (hover: hover) { .ds-logos { color: var(--color-mist); } .ds-logos:hover, .ds-logos:focus-within { color: var(--color-oxide); } } .ds-logo { display: block; width: 100%; height: 2.25rem; }"
+    },
+    {
+      "name": "Content Card (with image)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Card whose first element is a 16:9 image clipped to the md radius; the frame here is a stand-in for the photograph.",
+      "html": "<a class=\"ds-cc\" href=\"#\"><div class=\"ds-cc-card\"><div class=\"ds-cc-media\"></div><div class=\"ds-cc-text\"><h3 class=\"ds-cc-title\">Air freight</h3><p class=\"ds-cc-body\">Scheduled and charter lift for time-critical cargo.</p></div></div></a>",
+      "css": ".ds-cc { display: block; height: 100%; text-decoration: none; } .ds-cc-card { display: flex; flex-direction: column; gap: var(--spacing-cozy); height: 100%; padding: var(--spacing-comfortable); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-sm); transition: border-color 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-cc:hover .ds-cc-card { border-color: var(--color-mist); } .ds-cc-media { aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-md); background: var(--color-border); } .ds-cc-text { display: flex; flex-direction: column; gap: var(--spacing-tight); } .ds-cc-title { margin: 0; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--color-foreground); } .ds-cc-body { margin: 0; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--color-muted); }"
+    },
+    {
+      "name": "Service Card (wallet stack, highlight)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Horizontal card: image filling the left 40%, text right, at least 14rem tall. Highlight state uses the oxide-soft fill and an oxide 30% border. In the page each card is sticky with its own inline top offset and z-index.",
+      "html": "<div class=\"ds-svc\"><div class=\"ds-svc-media\"></div><div class=\"ds-svc-body\"><span class=\"ds-svc-title\">Sea freight</span><span class=\"ds-svc-desc\">FCL and LCL between major ports.</span><span class=\"ds-svc-link\">View service</span></div></div>",
+      "css": ".ds-svc { display: flex; flex-direction: row; min-height: 14rem; border: 1px solid color-mix(in srgb, var(--color-oxide) 30%, transparent); border-radius: var(--radius-md); background: var(--color-oxide-soft); } .ds-svc-media { flex: 0 0 40%; border-radius: var(--radius-md) 0 0 var(--radius-md); background: var(--color-border); } .ds-svc-body { display: flex; flex: 1; flex-direction: column; gap: var(--spacing-cozy); padding: var(--spacing-comfortable); } .ds-svc-title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--color-foreground); } .ds-svc-desc { font-family: var(--font-sans); font-size: var(--text-sm); color: var(--color-muted); } .ds-svc-link { margin-top: auto; font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-oxide); }"
+    },
+    {
+      "name": "Industry Card (with image)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "md-radius bordered card with a clipped 16:9 image above an Archivo title. Hover lifts 2px and turns the border oxide.",
+      "html": "<a class=\"ds-ind\" href=\"#\"><div class=\"ds-ind-card\"><div class=\"ds-ind-media\"></div><span class=\"ds-ind-title\">Healthcare</span><span class=\"ds-ind-desc\">Sector expertise and specialist partners.</span></div></a>",
+      "css": ".ds-ind { display: block; height: 100%; text-decoration: none; } .ds-ind-card { display: flex; flex-direction: column; gap: var(--spacing-cozy); height: 100%; padding: var(--spacing-comfortable); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); transition: border-color 180ms cubic-bezier(0.2, 0, 0, 1), transform 180ms cubic-bezier(0.2, 0, 0, 1); } .ds-ind:hover .ds-ind-card { transform: translateY(-0.125rem); border-color: var(--color-oxide); } .ds-ind-media { aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-md); background: var(--color-border); } .ds-ind-title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--color-foreground); } .ds-ind-desc { margin-top: auto; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--color-muted); }"
+    },
+    {
+      "name": "Hero Image with Overlay",
+      "kind": "custom",
+      "refersTo": "colors.ink",
+      "description": "Dark hero on a full-bleed photograph (stand-in frame here). A background-token overlay keeps text legible: flat 90% below lg, a left-to-right 100/90/30% gradient from lg. The ticker is backed by background at 85%. Tokens are remapped locally because a shadow tree cannot see [data-mode=dark].",
+      "html": "<section class=\"ds-hero\"><div class=\"ds-hero-photo\"></div><div class=\"ds-hero-overlay\"></div><div class=\"ds-hero-content\"><h1 class=\"ds-hero-title\">Move freight anywhere, with total visibility.</h1></div><div class=\"ds-hero-ticker\">Origin to destination</div></section>",
+      "css": ".ds-hero { --color-background: var(--palette-ink); --color-foreground: var(--palette-paper); --color-muted: var(--palette-mist-on-dark); --color-border: var(--palette-graphite); position: relative; isolation: isolate; overflow: hidden; background: var(--color-background); } .ds-hero-photo { position: absolute; inset: 0; z-index: -10; background: var(--color-steel); } .ds-hero-overlay { position: absolute; inset: 0; z-index: -10; background: linear-gradient(to right, var(--color-background), color-mix(in srgb, var(--color-background) 90%, transparent), color-mix(in srgb, var(--color-background) 30%, transparent)); } .ds-hero-content { max-width: 72rem; margin: 0 auto; padding: var(--spacing-expansive) var(--spacing-comfortable); } .ds-hero-title { max-width: 32rem; margin: 0; font-family: var(--font-display); font-variation-settings: 'wdth' 112; font-size: var(--text-4xl); line-height: 1.05; font-weight: 600; letter-spacing: -0.015em; color: var(--color-foreground); } .ds-hero-ticker { padding: var(--spacing-snug) var(--spacing-comfortable); border-top: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-background) 85%, transparent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.025em; text-transform: uppercase; color: var(--color-muted); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Manifest",
+    "overview": "The Manifest. A shipment is understood as an ordered record. Hairline rules, tabular figures and numbering only where order is real. Cool neutral surfaces carry the data. Oxide is the single warm mark: it points to a position or the next action.\n\nThe public site reads as premium, global, technological, precise, trustworthy, industrial without feeling dated, and data-driven. The build expresses this with a cool-slate neutral family, a single warm brand hue (oxide) used sparingly for the primary action, links and small marks, and cool status hues that only ever name a shipment state. apps/web is always light; dark sections use a nested data-mode=\"dark\" wrapper that remaps the same semantic tokens.",
+    "keyCharacteristics": [
+      "Cool slate neutrals, one warm brand hue, cool status hues kept in a separate family.",
+      "Semantic tokens only in components; in code, hex exists solely in palette.css.",
+      "Archivo display headings (wdth 112, 600) over IBM Plex Sans body and IBM Plex Mono data.",
+      "Contained max-w-6xl column with full-bleed bands for chrome.",
+      "Restrained motion: short eased transitions, no bounce or elastic easing."
+    ],
+    "rules": [
+      {
+        "name": "The Token-Only Rule",
+        "body": "In code, hex values live only in palette.css. Components use semantic utilities and never a literal color.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Family Rule",
+        "body": "Oxide is brand and never a status; transit, delivered and exception are status and never a brand, CTA or navigation accent. The one non-status job of transit is the focus ring.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paired-Shade Rule",
+        "body": "Text, icons, dots and rules use the accent's -on-light / -on-dark shade through the semantic token; solid fills use the solid hue. Oxide solid takes chalk text, not ink.",
+        "section": "colors"
+      },
+      {
+        "name": "The Soft-Wash Rule",
+        "body": "Badge and highlight backgrounds use the -soft tokens paired with their matching text token. danger-soft is a fill for an icon or inline alert rule, not a background for body-sized error text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Approved-Type Rule",
+        "body": "Typefaces and the type scale are approved. Do not add, swap or resize them.",
+        "section": "typography"
+      },
+      {
+        "name": "The Width-Not-Family Rule",
+        "body": "Display contrast comes from Archivo's width axis (wdth 112) and tracking, never from introducing another display face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Glow-In-Dark Rule",
+        "body": "Inside data-mode=\"dark\", elevation is a light glow from the paper token, never a dark cast.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Derived-Shadow Rule",
+        "body": "Shadow color is always color-mix from a palette token, never a literal rgba.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use semantic color utilities only, and pair accent text with the semantic token so it resolves to the -on-light or -on-dark shade for the active mode.",
+      "Do put dark sections in a nested data-mode=\"dark\" wrapper on the background token; keep the page itself light.",
+      "Do keep oxide as the primary-action fill (with chalk text), and use transit, delivered and exception only for shipment state.",
+      "Do use Archivo (wdth 112, 600, -0.015em) for h1-h3, Plex Sans for UI text, Plex Mono with tabular figures for references, coordinates and timestamps.",
+      "Do use the named spacing and radius tokens and the --shadow-* tokens.",
+      "Do transition with ease-standard over duration-base or duration-fast, and provide a reduced-motion path for every animation."
+    ],
+    "donts": [
+      "Don't write a hex or rgba value outside palette.css, or use a Tailwind default color.",
+      "Don't use dark: variants or paint ink/steel as an apps/web page background.",
+      "Don't use oxide for status, or a status hue for brand, CTA or navigation.",
+      "Don't pair oxide solid with ink text.",
+      "Don't add or swap typefaces, or change the approved type scale.",
+      "Don't use bounce or elastic easing, or an animation with no reduced-motion path.",
+      "Don't use a dark cast shadow inside a dark section."
+    ]
+  }
+}
