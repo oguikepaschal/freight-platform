@@ -10,6 +10,9 @@
 export { Button, buttonClassName } from "./Button";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./Button";
 
+export { Logo } from "./Logo";
+export type { LogoProps, LogoVariant } from "./Logo";
+
 export { Badge } from "./Badge";
 export type { BadgeProps, BadgeVariant } from "./Badge";
 

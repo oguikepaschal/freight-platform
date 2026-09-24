@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { RefObject } from "react";
 import { buttonClassName } from "./Button";
 import { cx } from "./cx";
+import { Logo } from "./Logo";
 import type { NavLink, PrimaryNavItem } from "./nav-data";
 import {
   DEFAULT_PRIMARY_ACTION,
@@ -531,8 +532,13 @@ export function Header({
 
       {/* Main bar: logo, primary nav, contextual CTA. */}
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-cozy px-comfortable py-snug">
-        <a href={resolveHref("/")} className="font-display text-lg font-semibold text-foreground">
-          Meridian Freight
+        <a href={resolveHref("/")} aria-label="Meridian Freight" className="shrink-0 text-foreground">
+          <span className="block sm:hidden">
+            <Logo variant="compact" className="h-[0.9rem] w-auto" />
+          </span>
+          <span className="hidden sm:block">
+            <Logo variant="header" className="h-[0.9rem] w-auto" />
+          </span>
         </a>
 
         <nav aria-label="Primary" className="hidden items-center gap-tight md:flex">

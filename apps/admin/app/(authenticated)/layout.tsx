@@ -12,7 +12,8 @@ export default async function AuthenticatedLayout({ children }: { children: Reac
 
   return (
     <AppShell
-      brand="Meridian Freight Admin"
+      brand="Meridian Freight"
+      appLabel="Admin"
       navItems={[
         { label: "Shipments", href: "/shipments" },
         { label: "Customers", href: "/customers" },
