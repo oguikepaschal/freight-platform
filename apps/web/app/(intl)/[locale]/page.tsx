@@ -117,7 +117,7 @@ export default async function Page() {
           <ManifestStrip />
         </div>
 
-        <LaneTicker lanes={LANES} />
+        <LaneTicker lanes={LANES} className="bg-background/85" />
       </section>
 
       <StatBand stats={STATS} />
@@ -159,7 +159,7 @@ export default async function Page() {
             {SERVICES.map((service, index) => (
               <div
                 key={service.slug}
-                className={`sticky flex flex-col rounded-md border transition-colors duration-base md:flex-row ${
+                className={`sticky flex flex-col rounded-md border transition-colors duration-base md:min-h-56 md:flex-row ${
                   index === 0
                     ? "border-oxide/30 bg-oxide-soft"
                     : "border-border bg-surface hover:border-mist"
