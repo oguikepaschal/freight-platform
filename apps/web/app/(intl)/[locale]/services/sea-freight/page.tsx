@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function SeaFreightPage() {
     name: "Sea freight",
     monogram: "SF",
     monogramTagline: "Full containers & consolidated shipments",
+    image: contentImage("sea-freight"),
     headline: "Global ocean freight that scales with your business.",
     intro:
       "Whether you ship full containers or smaller consolidated shipments, our ocean freight service connects you to major global trade lanes with transparent pricing, predictable transit times, and dedicated account management.",

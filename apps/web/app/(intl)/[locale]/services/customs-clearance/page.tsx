@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function CustomsClearancePage() {
     name: "Customs clearance",
     monogram: "CC",
     monogramTagline: "Import & export clearance coordination",
+    image: contentImage("customs-clearance"),
     headline: "Customs clearance coordinated by people who know the paperwork.",
     intro:
       "Import and export clearance can stall a shipment fast when documentation isn't right. Our customs clearance service is handled by specialists who know local regulations and prepare the paperwork your shipment needs, so it keeps moving through the border.",

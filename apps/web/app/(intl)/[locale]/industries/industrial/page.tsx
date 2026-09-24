@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function IndustrialPage() {
     name: "Industrial",
     monogram: "IN",
     monogramTagline: "Heavy machinery & industrial equipment logistics",
+    image: contentImage("industrial"),
     headline: "Logistics built for cargo that doesn't move like everything else.",
     intro:
       "Heavy machinery and industrial equipment bring size, weight, and handling requirements that generic freight service isn't built for. We coordinate door-to-door transport around what your equipment actually needs, from loading to final placement.",

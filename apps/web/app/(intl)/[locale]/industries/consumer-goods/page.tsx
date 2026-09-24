@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function ConsumerGoodsPage() {
     name: "Consumer goods",
     monogram: "CG",
     monogramTagline: "Fast-moving consumer goods logistics",
+    image: contentImage("consumer-goods"),
     headline: "Logistics that scale with your consumer goods business.",
     intro:
       "Fast-moving consumer goods brands need logistics that keep pace with retail calendars, seasonal spikes, and changing demand. We build reliable, scalable transport and distribution around those rhythms, so your products reach shelves and customers on schedule.",

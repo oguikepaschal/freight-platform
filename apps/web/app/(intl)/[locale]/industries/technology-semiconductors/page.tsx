@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function TechnologySemiconductorsPage() {
     name: "Technology and semiconductors",
     monogram: "TS",
     monogramTagline: "High-value tech & semiconductor cargo",
+    image: contentImage("technology-semiconductors"),
     headline: "Logistics built for high-value tech and semiconductor cargo.",
     intro:
       "Semiconductor components and technology hardware carry a combination of high value, sensitivity, and tight production schedules that generic freight handling wasn't built for. We coordinate secure, time-critical transport around what this cargo actually demands, from factory floor to customer.",

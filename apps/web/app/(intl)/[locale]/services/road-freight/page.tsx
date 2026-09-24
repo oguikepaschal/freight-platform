@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function RoadFreightPage() {
     name: "Road freight",
     monogram: "RF",
     monogramTagline: "Full-truckload, part-load & cross-border transport",
+    image: contentImage("road-freight"),
     headline: "Road transport that flexes with your shipment size and route.",
     intro:
       "From single pallets to full trailers, our road freight service moves cargo across regions and borders with the flexibility to match your volume. Whether you need a dedicated truck or a shared load, we build the route around what you're shipping.",

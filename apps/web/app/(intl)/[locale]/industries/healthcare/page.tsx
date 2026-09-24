@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function HealthcarePage() {
     name: "Healthcare",
     monogram: "HC",
     monogramTagline: "Pharma & medical device logistics",
+    image: contentImage("healthcare"),
     headline: "Logistics built for what pharma and medical device shipments demand.",
     intro:
       "From temperature-sensitive pharmaceuticals to fragile medical devices, healthcare shipments carry requirements that generic freight handling can't meet. We build every move around the handling and documentation those shipments demand, with specialized packaging and clear chain-of-custody records from origin to destination.",

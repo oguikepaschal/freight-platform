@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   buttonClassName,
   CertificationsGrid,
@@ -70,7 +71,20 @@ export default async function Page() {
 
   return (
     <>
-      <section data-mode="dark" className="bg-background">
+      <section data-mode="dark" className="relative isolate bg-background">
+        {/* Full-bleed background behind the grid and ticker. `isolate` keeps
+            the -z-10 layers above this section's own background. Below lg the
+            text spans the full width, so the overlay is near-flat; from lg the
+            text sits left, so it fades out toward the ManifestStrip side. */}
+        <Image
+          src="/images/hero.jpg"
+          alt=""
+          fill
+          preload
+          sizes="100vw"
+          className="-z-10 object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-background/90 lg:bg-transparent lg:bg-linear-to-r lg:from-background lg:via-background/90 lg:to-background/30" />
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-loose px-comfortable py-expansive lg:grid-cols-2">
           <div className="flex flex-col gap-cozy">
             <p className="font-mono text-xs uppercase tracking-wide text-oxide">
@@ -103,7 +117,7 @@ export default async function Page() {
           <ManifestStrip />
         </div>
 
-        <LaneTicker lanes={LANES} />
+        <LaneTicker lanes={LANES} className="bg-background/85" />
       </section>
 
       <StatBand stats={STATS} />
@@ -145,32 +159,49 @@ export default async function Page() {
             {SERVICES.map((service, index) => (
               <div
                 key={service.slug}
-                className={`sticky flex flex-col gap-cozy rounded-md border p-comfortable transition-colors duration-base ${
+                className={`sticky flex flex-col rounded-md border transition-colors duration-base md:min-h-56 md:flex-row ${
                   index === 0
                     ? "border-oxide/30 bg-oxide-soft"
                     : "border-border bg-surface hover:border-mist"
                 }`}
                 style={{ top: `calc(10vh + ${index * 40}px)`, zIndex: index + 1 }}
               >
-                <div className="flex items-center justify-between">
-                  <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
-                    {initials(service.label)}
+                {/* Image wrapper has no intrinsic height at md+: the row's
+                    text column sets the card height and the image crops to it. */}
+                {service.image ? (
+                  <div className="relative aspect-video shrink-0 overflow-hidden rounded-t-md md:aspect-auto md:w-2/5 md:rounded-l-md md:rounded-tr-none">
+                    <Image
+                      src={service.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 768px) 40vw, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : null}
+                <div className="flex flex-1 flex-col gap-cozy p-comfortable">
+                  <div className="flex items-center justify-between">
+                    {service.image ? null : (
+                      <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
+                        {initials(service.label)}
+                      </span>
+                    )}
+                    <span className="font-mono text-xs text-muted">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <span className="font-display text-lg font-semibold text-foreground">
+                    {service.label}
                   </span>
-                  <span className="font-mono text-xs text-muted">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                  <span className="text-sm text-muted">{service.shortDescription}</span>
+                  <a
+                    href={resolveHref(service.href)}
+                    className="relative mt-auto inline-flex w-fit items-center gap-tight font-mono text-sm text-oxide after:absolute after:inset-0 after:content-['']"
+                  >
+                    View service
+                    <span aria-hidden="true">→</span>
+                  </a>
                 </div>
-                <span className="font-display text-lg font-semibold text-foreground">
-                  {service.label}
-                </span>
-                <span className="text-sm text-muted">{service.shortDescription}</span>
-                <a
-                  href={resolveHref(service.href)}
-                  className="relative mt-auto inline-flex w-fit items-center gap-tight font-mono text-sm text-oxide after:absolute after:inset-0 after:content-['']"
-                >
-                  View service
-                  <span aria-hidden="true">→</span>
-                </a>
               </div>
             ))}
           </div>
@@ -197,11 +228,24 @@ export default async function Page() {
           <div className="grid grid-cols-1 gap-cozy sm:grid-cols-2 lg:grid-cols-3">
             {INDUSTRIES.map((industry, index) => (
               <a key={industry.slug} href={resolveHref(industry.href)} className="block h-full">
-                <div className="flex h-full flex-col gap-cozy rounded-md border border-t-2 border-border bg-surface p-comfortable transition-[border-color,transform] duration-base hover:-translate-y-0.5 hover:border-t-oxide">
+                <div className="flex h-full flex-col gap-cozy rounded-md border border-border bg-surface p-comfortable transition-[border-color,transform] duration-base hover:-translate-y-0.5 hover:border-oxide">
+                  {industry.image ? (
+                    <div className="relative aspect-video overflow-hidden rounded-md">
+                      <Image
+                        src={industry.image}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : null}
                   <div className="flex items-center justify-between">
-                    <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
-                      {initials(industry.label)}
-                    </span>
+                    {industry.image ? null : (
+                      <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
+                        {initials(industry.label)}
+                      </span>
+                    )}
                     <span className="font-mono text-xs text-muted">
                       {String(index + 1).padStart(2, "0")}
                     </span>

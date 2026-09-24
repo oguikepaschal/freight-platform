@@ -74,6 +74,7 @@ export type { FooterProps } from "./Footer";
 export {
   SERVICES,
   INDUSTRIES,
+  contentImage,
   PRIMARY_NAV,
   UTILITY_LINKS,
   PORTAL_LINK,

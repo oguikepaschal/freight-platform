@@ -52,6 +52,12 @@ export interface ContentNavLink extends NavLink {
    * uses them yet.
    */
   tags?: string[];
+  /**
+   * Decorative card/hero image — a public path served from apps/web/public
+   * (e.g. "/images/services/sea-freight.jpeg"). Absent means surfaces fall
+   * back to the initials monogram.
+   */
+  image?: string;
 }
 
 export const SERVICES: ContentNavLink[] = [
@@ -59,6 +65,7 @@ export const SERVICES: ContentNavLink[] = [
     slug: "sea-freight",
     label: "Sea freight",
     href: "/services/sea-freight",
+    image: "/images/services/sea-freight.jpeg",
     shortDescription: "Full container and consolidated ocean freight across major global trade lanes.",
     ctaLabel: "Talk to a Sea Freight specialist",
     ctaHref: "/contact",
@@ -67,6 +74,7 @@ export const SERVICES: ContentNavLink[] = [
     slug: "air-freight",
     label: "Air freight",
     href: "/services/air-freight",
+    image: "/images/services/air-freight.jpeg",
     shortDescription: "Time-critical air cargo with express, standard, and charter options worldwide.",
     ctaLabel: "Talk to an Air Freight specialist",
     ctaHref: "/contact",
@@ -75,6 +83,7 @@ export const SERVICES: ContentNavLink[] = [
     slug: "road-freight",
     label: "Road freight",
     href: "/services/road-freight",
+    image: "/images/services/road-freight.jpeg",
     shortDescription: "Full-truckload, part-load, and cross-border road transport across regions.",
     ctaLabel: "Talk to a Road Freight specialist",
     ctaHref: "/contact",
@@ -83,6 +92,7 @@ export const SERVICES: ContentNavLink[] = [
     slug: "warehousing-fulfilment-distribution",
     label: "Warehousing, fulfilment and distribution",
     href: "/services/warehousing-fulfilment-distribution",
+    image: "/images/services/warehousing-fulfilment-distribution.jpeg",
     shortDescription: "Storage, pick-and-pack, and last-mile distribution from a global facility network.",
     ctaLabel: "Talk to a Warehousing, Fulfilment and Distribution specialist",
     ctaHref: "/contact",
@@ -91,6 +101,7 @@ export const SERVICES: ContentNavLink[] = [
     slug: "customs-clearance",
     label: "Customs clearance",
     href: "/services/customs-clearance",
+    image: "/images/services/customs-clearance.jpeg",
     shortDescription: "Import and export clearance handled by specialists who know local regulations.",
     ctaLabel: "Talk to a Customs Clearance specialist",
     ctaHref: "/contact",
@@ -99,6 +110,7 @@ export const SERVICES: ContentNavLink[] = [
     slug: "cargo-insurance",
     label: "Cargo insurance",
     href: "/services/cargo-insurance",
+    image: "/images/services/cargo-insurance.jpeg",
     shortDescription: "Protect shipments in transit with coverage tailored to cargo value and risk.",
     ctaLabel: "Talk to a Cargo Insurance specialist",
     ctaHref: "/contact",
@@ -110,6 +122,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     slug: "automotive-mobility",
     label: "Automotive and mobility",
     href: "/industries/automotive-mobility",
+    image: "/images/industries/automotive-mobility.jpeg",
     shortDescription: "Just-in-time and just-in-sequence logistics for automotive supply chains.",
     ctaLabel: "Talk to an Automotive and Mobility specialist",
     ctaHref: "/contact",
@@ -119,6 +132,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     slug: "consumer-goods",
     label: "Consumer goods",
     href: "/industries/consumer-goods",
+    image: "/images/industries/consumer-goods.jpeg",
     shortDescription: "Reliable, scalable logistics for fast-moving consumer goods brands.",
     ctaLabel: "Talk to a Consumer Goods specialist",
     ctaHref: "/contact",
@@ -128,6 +142,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     slug: "healthcare",
     label: "Healthcare",
     href: "/industries/healthcare",
+    image: "/images/industries/healthcare.jpeg",
     shortDescription: "Compliant, temperature-controlled logistics for pharma and medical devices.",
     ctaLabel: "Talk to a Healthcare specialist",
     ctaHref: "/contact",
@@ -137,6 +152,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     slug: "technology-semiconductors",
     label: "Technology and semiconductors",
     href: "/industries/technology-semiconductors",
+    image: "/images/industries/technology-semiconductors.jpeg",
     shortDescription: "Secure, time-critical logistics for high-value tech and semiconductor cargo.",
     ctaLabel: "Talk to a Technology and Semiconductors specialist",
     ctaHref: "/contact",
@@ -146,6 +162,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     slug: "industrial",
     label: "Industrial",
     href: "/industries/industrial",
+    image: "/images/industries/industrial.jpeg",
     shortDescription: "Heavy machinery and industrial equipment logistics, door to door.",
     ctaLabel: "Talk to an Industrial specialist",
     ctaHref: "/contact",
@@ -182,6 +199,18 @@ export const PORTAL_LINK: NavLink = {
   label: "Portal login",
   href: "https://freight-platform-portal.vercel.app",
 };
+
+/**
+ * Image path for a SERVICES/INDUSTRIES entry, so detail pages reference an
+ * entry by slug instead of repeating its path string. A valid entry with no
+ * `image` returns undefined (the field is optional); an unknown slug throws,
+ * since it can only be a typo — and a throw at render fails the static build.
+ */
+export function contentImage(slug: string): string | undefined {
+  const entry = [...SERVICES, ...INDUSTRIES].find((item) => item.slug === slug);
+  if (!entry) throw new Error(`contentImage: no SERVICES/INDUSTRIES entry with slug "${slug}"`);
+  return entry.image;
+}
 
 /** Site-wide fallback when a page doesn't specify its own contextual CTA. */
 export const DEFAULT_PRIMARY_ACTION: NavLink = { label: "Track shipment", href: "/track" };
