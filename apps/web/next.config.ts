@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   // step) — both need Next's own compiler to process them, which only
   // happens for packages listed here.
   transpilePackages: ["@freight/ui", "@freight/database"],
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
 };
 
 export default nextConfig;

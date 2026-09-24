@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Badge } from "./Badge";
 import { buttonClassName } from "./Button";
 import { Card } from "./Card";
@@ -28,6 +29,8 @@ export interface ServiceIndustryContent {
   monogram: string;
   /** Hero side-panel subtitle — independent copy, not nav-data.ts's shortDescription. */
   monogramTagline: string;
+  /** Decorative hero side-panel image — pass `contentImage(slug)` from nav-data.ts. */
+  image?: string;
   headline: string;
   intro: string;
   /** Both current examples use 4 — not a hard constraint. */
@@ -63,6 +66,17 @@ export function ServiceIndustryTemplate({ content }: ServiceIndustryTemplateProp
         </div>
 
         <div className="flex flex-col gap-tight rounded-lg border border-border bg-surface p-comfortable">
+          {content.image ? (
+            <div className="relative -mx-comfortable -mt-comfortable mb-tight aspect-video overflow-hidden rounded-t-lg">
+              <Image
+                src={content.image}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 576px, 100vw"
+                className="object-cover"
+              />
+            </div>
+          ) : null}
           <div className="flex items-center gap-snug">
             <div className="flex size-12 items-center justify-center rounded-md border border-border bg-background font-mono text-lg font-semibold text-foreground">
               {content.monogram}

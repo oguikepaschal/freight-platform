@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function CargoInsurancePage() {
     name: "Cargo insurance",
     monogram: "CI",
     monogramTagline: "Coverage matched to shipment value & risk",
+    image: contentImage("cargo-insurance"),
     headline: "Protect your shipment's value, wherever it travels.",
     intro:
       "Freight in transit carries risk you can't always control — weather, handling, route disruptions. Our cargo insurance service gives you coverage options to protect your shipment's value, arranged alongside the freight service you're already using, so protection is one less thing to source separately.",

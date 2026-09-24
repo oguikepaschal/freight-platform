@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function AutomotiveMobilityPage() {
     name: "Automotive and mobility",
     monogram: "AM",
     monogramTagline: "Just-in-time & just-in-sequence logistics",
+    image: contentImage("automotive-mobility"),
     headline: "Logistics built for production lines that don't wait.",
     intro:
       "Automotive supply chains run on precise timing — a late component can stop a production line, not just a shipment. We coordinate just-in-time and just-in-sequence delivery around your production schedule, so parts arrive exactly when the line needs them.",

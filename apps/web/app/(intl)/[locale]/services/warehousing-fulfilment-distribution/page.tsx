@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function WarehousingFulfilmentDistributionPage() {
     name: "Warehousing, fulfilment and distribution",
     monogram: "WD",
     monogramTagline: "Storage, pick-and-pack & last-mile distribution",
+    image: contentImage("warehousing-fulfilment-distribution"),
     headline: "Warehousing and fulfilment that scales with your inventory.",
     intro:
       "From short-term storage to full pick-and-pack fulfilment, our warehousing service gives you space and operations that flex with demand. A global facility network means your inventory sits closer to your customers, wherever they are.",

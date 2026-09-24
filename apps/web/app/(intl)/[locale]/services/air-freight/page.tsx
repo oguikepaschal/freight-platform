@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -16,6 +16,7 @@ export default async function AirFreightPage() {
     name: "Air freight",
     monogram: "AF",
     monogramTagline: "Express, standard & charter options",
+    image: contentImage("air-freight"),
     headline: "Air cargo that moves as fast as your business needs it to.",
     intro:
       "When speed matters more than cost, our air freight service gets your shipment where it needs to be. From express next-flight-out options to standard scheduled cargo and charter capacity for oversized loads, we match the service level to your deadline.",
