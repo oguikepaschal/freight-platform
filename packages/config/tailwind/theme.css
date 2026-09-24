@@ -175,8 +175,9 @@
 }
 
 /* Binds LaneTicker's translation to document scroll position instead of a
-   timer, via `animation-timeline: scroll(root)`. That property has no
-   Firefox/Safari support today, so it's gated by @supports as well as the
+   timer, via `animation-timeline: scroll(root)`. That property is supported
+   in Chromium (115+) and Safari (26+) but not yet in Firefox stable (Nightly
+   only, as of Firefox 156), so it's gated by @supports as well as the
    usual prefers-reduced-motion check — reset.css's blanket
    `@media (prefers-reduced-motion: reduce)` override only zeroes
    time-based animation-duration, which does nothing for a scroll-bound
@@ -192,6 +193,41 @@
     .lane-ticker-track {
       animation: marquee-scroll linear;
       animation-timeline: scroll(root);
+    }
+  }
+}
+
+/* Entrance reveal for homepage blocks: fades up over the first
+   --spacing-expansive of scroll after an element's leading edge enters the
+   viewport, driven by `animation-timeline: view()` (same support story as
+   the lane ticker above, and a plain class for the same @utility reason).
+   `backwards` fill, not `both`: before the range the from-keyframe holds the
+   element hidden, and after it the animation releases so the element goes
+   back to its natural style. `both` would leave an identity `transform` on
+   every revealed block, which is still a stacking context and containing
+   block. The `screen` media type keeps print output from inheriting the
+   hidden state, and no-preference plus @supports mean reduced-motion and
+   unsupported browsers see the content untouched. The timeline is scroll
+   position, so the reveal runs in reverse when scrolling back up. Keep it
+   off anything already in view at load and off any ancestor of a sticky
+   element. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--spacing-cozy));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-up var(--ease-standard) backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry var(--spacing-expansive);
     }
   }
 }
