@@ -130,7 +130,7 @@ export default async function Page() {
         <LogoStrip label="Trusted by" brands={CUSTOMERS} accent="oxide" />
 
         <section className="flex flex-col gap-comfortable">
-          <div className="flex flex-wrap items-end justify-between gap-cozy">
+          <div className="reveal flex flex-wrap items-end justify-between gap-cozy">
             <div className="flex flex-col gap-tight">
               <p className="font-mono text-xs font-medium uppercase tracking-wide text-oxide">
                 01 — Services
@@ -208,7 +208,7 @@ export default async function Page() {
         </section>
 
         <section className="flex flex-col gap-comfortable">
-          <div className="flex flex-wrap items-end justify-between gap-cozy">
+          <div className="reveal flex flex-wrap items-end justify-between gap-cozy">
             <div className="flex flex-col gap-tight">
               <p className="font-mono text-xs font-medium uppercase tracking-wide text-oxide">
                 02 — Industries
@@ -227,7 +227,11 @@ export default async function Page() {
 
           <div className="grid grid-cols-1 gap-cozy sm:grid-cols-2 lg:grid-cols-3">
             {INDUSTRIES.map((industry, index) => (
-              <a key={industry.slug} href={resolveHref(industry.href)} className="block h-full">
+              <a
+                key={industry.slug}
+                href={resolveHref(industry.href)}
+                className="reveal block h-full"
+              >
                 <div className="flex h-full flex-col gap-cozy rounded-md border border-border bg-surface p-comfortable transition-[border-color,transform] duration-base hover:-translate-y-0.5 hover:border-oxide">
                   {industry.image ? (
                     <div className="relative aspect-video overflow-hidden rounded-md">
@@ -296,9 +300,14 @@ export default async function Page() {
             </div>
           </div>
 
-          <LogoStrip label="Integrates with" brands={INTEGRATIONS} accent="transit" />
+          <LogoStrip
+            label="Integrates with"
+            brands={INTEGRATIONS}
+            accent="transit"
+            className="reveal"
+          />
 
-          <div className="flex flex-col gap-cozy">
+          <div className="reveal flex flex-col gap-cozy">
             <p className="font-mono text-xs font-medium uppercase tracking-wide text-muted">
               Certifications and compliance
             </p>
