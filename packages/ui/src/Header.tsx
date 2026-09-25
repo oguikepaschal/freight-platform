@@ -531,7 +531,7 @@ export function Header({
       </div>
 
       {/* Main bar: logo, primary nav, contextual CTA. */}
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-cozy px-comfortable py-snug">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-cozy gap-y-tight px-comfortable py-snug md:flex-nowrap">
         <a href={resolveHref("/")} aria-label="Meridian Freight" className="shrink-0 text-foreground">
           <span className="block lg:hidden">
             <Logo variant="compact" className="h-[0.9rem] w-auto" />
@@ -560,7 +560,7 @@ export function Header({
           )}
         </nav>
 
-        <div className="flex items-center gap-tight">
+        <div className="ml-auto flex items-center gap-tight md:ml-0">
           {/* Homepage hot paths (per Project_Overview.md): reachable without
               opening the mobile menu, not just tucked inside it. */}
           {trackLink ? (
