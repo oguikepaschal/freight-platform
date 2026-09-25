@@ -64,8 +64,7 @@ const ACCENT_CLASSES: Record<LogoStripProps["accent"], string> = {
  * and translatable, and so a failed font load degrades down the
  * --font-display stack instead of to nothing.
  *
- * Every name is invented. Following ManifestStrip's "Decorative preview
- * data" precedent, each strip states that in a visually-hidden line
+ * Every name is invented. Each strip states that in a visually-hidden line
  * rather than a visible disclaimer — the claim is only misleading to
  * someone who can't see that these are unbranded geometric placeholders.
  */

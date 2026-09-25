@@ -2,19 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import {
   buttonClassName,
-  CertificationsGrid,
-  CUSTOMERS,
   DarkCtaBand,
   DEFAULT_PRIMARY_ACTION,
+  HOME_PRIMARY_ACTION,
   INDUSTRIES,
-  INTEGRATIONS,
   LaneTicker,
-  LogoStrip,
   ManifestStrip,
-  PORTAL_LINK,
   SERVICES,
-  StatBand,
-  TestimonialBlock,
+  touchTarget,
 } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
@@ -22,15 +17,8 @@ import { getLocale } from "@/lib/locale/server";
 export const metadata: Metadata = {
   title: "Meridian Freight — Global freight forwarding & logistics",
   description:
-    "Sea, air, and road freight, customs, warehousing, and supply-chain consulting — booked and tracked from one platform, with a specialist behind every shipment.",
+    "Sea, air, and road freight, customs, warehousing, and supply-chain consulting — quoted by a specialist and tracked by reference number.",
 };
-
-const STATS = [
-  { value: "148", label: "Offices in 46 countries" },
-  { value: "2.4M", label: "TEU moved annually" },
-  { value: "96.2%", label: "On-time lane performance" },
-  { value: "24/7", label: "Named specialist per account" },
-];
 
 const LANES = [
   "Shanghai → Rotterdam",
@@ -43,13 +31,22 @@ const LANES = [
   "Singapore → Sydney",
 ];
 
-const CERTIFICATIONS = [
-  { code: "AEO", description: "Customs simplification" },
-  { code: "IATA CASS", description: "Air cargo agent" },
-  { code: "C-TPAT", description: "Supply-chain security" },
-  { code: "ISO 9001", description: "Quality management" },
-  { code: "GDP", description: "Pharma distribution" },
-  { code: "ISO 14001", description: "Environmental" },
+const QUOTE_STEPS = [
+  {
+    title: "Tell us the lane",
+    description:
+      "Send origin, destination, cargo details, and dates through the contact form. No account needed.",
+  },
+  {
+    title: "A specialist reviews it",
+    description:
+      "A person checks routing, customs, and handling for your cargo. Pricing is worked out by them, not by a rate engine.",
+  },
+  {
+    title: "You get a quote back",
+    description:
+      "The specialist replies with a quote and a recommended routing. Once it ships, track it by reference number.",
+  },
 ];
 
 /** First letter of up to the first two words — same lightweight monogram
@@ -91,59 +88,50 @@ export default async function Page() {
               Global freight forwarding
             </p>
             <h1 className="font-display text-4xl font-semibold text-foreground">
-              Move freight anywhere, with total visibility.
+              Move freight anywhere, with a specialist on every shipment.
             </h1>
             <p className="max-w-lg text-base text-muted">
               Sea, air, and road freight, customs clearance, warehousing, and supply-chain
-              consulting — booked and tracked from one platform, with a specialist behind
-              every shipment.
+              consulting. Tell us the lane and a specialist comes back with a quote; once it
+              moves, you track it by reference number.
             </p>
             <div className="flex flex-wrap gap-cozy pt-tight">
               <a
+                href={resolveHref(HOME_PRIMARY_ACTION.href)}
+                className={buttonClassName("primary", "md", touchTarget)}
+              >
+                {HOME_PRIMARY_ACTION.label}
+              </a>
+              <a
                 href={resolveHref(DEFAULT_PRIMARY_ACTION.href)}
-                className={buttonClassName("primary", "md")}
+                className={buttonClassName("secondary", "md", touchTarget)}
               >
                 {DEFAULT_PRIMARY_ACTION.label}
-              </a>
-              <a href={resolveHref("/contact")} className={buttonClassName("secondary", "md")}>
-                Talk to an expert
-              </a>
-              <a href={resolveHref(PORTAL_LINK.href)} className={buttonClassName("ghost", "md")}>
-                {PORTAL_LINK.label}
               </a>
             </div>
           </div>
 
-          <ManifestStrip />
+          {/* Only beside the hero copy, from lg. Below lg the grid is one
+              column, where the panel stacked under the copy and pushed the
+              first section a full screen down; the lane ticker still
+              carries the freight texture there. */}
+          <ManifestStrip className="hidden lg:block" />
         </div>
 
         <LaneTicker lanes={LANES} className="bg-background/85" />
       </section>
 
-      <StatBand stats={STATS} />
-
       <div className="mx-auto flex max-w-6xl flex-col gap-expansive px-comfortable py-expansive">
-        {/* Unnumbered on purpose. The page's numbered sections are 01
-            Services / 02 Industries / 03 Assurance; slotting a strip into
-            that sequence would renumber copy across the page to say
-            nothing the label doesn't already say. */}
-        <LogoStrip label="Trusted by" brands={CUSTOMERS} accent="oxide" />
-
         <section className="flex flex-col gap-comfortable">
           <div className="reveal flex flex-wrap items-end justify-between gap-cozy">
-            <div className="flex flex-col gap-tight">
-              <p className="font-mono text-xs font-medium uppercase tracking-wide text-oxide">
-                01 — Services
-              </p>
-              <h2 className="font-display text-2xl font-semibold text-foreground">
-                Every mode and value-added service, from a single partner.
-              </h2>
-            </div>
+            <h2 className="font-display text-2xl font-semibold text-foreground">
+              Every mode and value-added service, from a single partner.
+            </h2>
             <a
               href={resolveHref("/services")}
-              className="font-mono text-xs font-medium uppercase tracking-wide text-muted transition-colors duration-base hover:text-oxide"
+              className="relative font-mono text-xs font-medium uppercase tracking-wide text-muted transition-colors duration-base after:absolute after:-inset-x-2 after:-inset-y-3.5 after:content-[''] hover:text-oxide"
             >
-              All services ↗
+              All services <span aria-hidden="true">→</span>
             </a>
           </div>
 
@@ -180,19 +168,14 @@ export default async function Page() {
                   </div>
                 ) : null}
                 <div className="flex flex-1 flex-col gap-cozy p-comfortable">
-                  <div className="flex items-center justify-between">
-                    {service.image ? null : (
-                      <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
-                        {initials(service.label)}
-                      </span>
-                    )}
-                    <span className="font-mono text-xs text-muted">
-                      {String(index + 1).padStart(2, "0")}
+                  {service.image ? null : (
+                    <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
+                      {initials(service.label)}
                     </span>
-                  </div>
-                  <span className="font-display text-lg font-semibold text-foreground">
+                  )}
+                  <h3 className="font-display text-lg font-semibold text-foreground">
                     {service.label}
-                  </span>
+                  </h3>
                   <span className="text-sm text-muted">{service.shortDescription}</span>
                   <a
                     href={resolveHref(service.href)}
@@ -209,54 +192,54 @@ export default async function Page() {
 
         <section className="flex flex-col gap-comfortable">
           <div className="reveal flex flex-wrap items-end justify-between gap-cozy">
-            <div className="flex flex-col gap-tight">
-              <p className="font-mono text-xs font-medium uppercase tracking-wide text-oxide">
-                02 — Industries
-              </p>
-              <h2 className="font-display text-2xl font-semibold text-foreground">
-                Sector expertise, certifications, and specialist partners built in.
-              </h2>
-            </div>
+            <h2 className="font-display text-2xl font-semibold text-foreground">
+              Handling, documentation, and timing matched to your sector.
+            </h2>
             <a
               href={resolveHref("/industries")}
-              className="font-mono text-xs font-medium uppercase tracking-wide text-muted transition-colors duration-base hover:text-oxide"
+              className="relative font-mono text-xs font-medium uppercase tracking-wide text-muted transition-colors duration-base after:absolute after:-inset-x-2 after:-inset-y-3.5 after:content-[''] hover:text-oxide"
             >
-              All industries ↗
+              All industries <span aria-hidden="true">→</span>
             </a>
           </div>
 
+          {/* Five industries: the first card spans two columns, so the grid
+              fills evenly at both two columns (2 + 2 + 2) and three (3 + 3)
+              instead of leaving one card alone on the last row. Its image
+              crop widens to 4:1 to keep the row's image heights equal. */}
           <div className="grid grid-cols-1 gap-cozy sm:grid-cols-2 lg:grid-cols-3">
             {INDUSTRIES.map((industry, index) => (
               <a
                 key={industry.slug}
                 href={resolveHref(industry.href)}
-                className="reveal block h-full"
+                className={`reveal block h-full ${index === 0 ? "sm:col-span-2" : ""}`}
               >
                 <div className="flex h-full flex-col gap-cozy rounded-md border border-border bg-surface p-comfortable transition-[border-color,transform] duration-base hover:-translate-y-0.5 hover:border-oxide">
                   {industry.image ? (
-                    <div className="relative aspect-video overflow-hidden rounded-md">
+                    <div
+                      className={`relative aspect-video overflow-hidden rounded-md ${index === 0 ? "sm:aspect-[4/1]" : ""}`}
+                    >
                       <Image
                         src={industry.image}
                         alt=""
                         fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        sizes={
+                          index === 0
+                            ? "(min-width: 1024px) 66vw, 100vw"
+                            : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        }
                         className="object-cover"
                       />
                     </div>
                   ) : null}
-                  <div className="flex items-center justify-between">
-                    {industry.image ? null : (
-                      <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
-                        {initials(industry.label)}
-                      </span>
-                    )}
-                    <span className="font-mono text-xs text-muted">
-                      {String(index + 1).padStart(2, "0")}
+                  {industry.image ? null : (
+                    <span className="flex size-9 items-center justify-center rounded-md border border-border bg-background font-mono text-xs font-medium text-foreground">
+                      {initials(industry.label)}
                     </span>
-                  </div>
-                  <span className="font-display text-lg font-semibold text-foreground">
+                  )}
+                  <h3 className="font-display text-lg font-semibold text-foreground">
                     {industry.label}
-                  </span>
+                  </h3>
                   <span className="mt-auto text-sm text-muted">{industry.shortDescription}</span>
                 </div>
               </a>
@@ -264,63 +247,33 @@ export default async function Page() {
           </div>
         </section>
 
-        <section className="flex flex-col gap-loose border-t border-border pt-expansive">
-          <p className="font-mono text-xs font-medium uppercase tracking-wide text-oxide">
-            03 — Assurance
-          </p>
-
-          {/* Scroll track for the pinned quote, and nothing else. The panel
-              is sticky at top:20vh and 80vh tall, so the track's height is
-              what buys the pin its dwell: it holds for (track height - 80vh)
-              of scroll, and the same figure is the empty space left below it
-              inside the track.
-
-              That empty space is why nothing else lives in here. Flow
-              siblings placed in this track scroll *behind* the panel by
-              construction — it is opaque and z-10 — so the strip and the
-              certifications grid that used to sit here were legible for
-              only ~180px of scroll each. They now follow the track in
-              normal flow.
-
-              100vh, not 200vh: with the siblings gone, 200vh meant a 120vh
-              dwell paid for with 120vh of empty track under the quote.
-              Dwell and trailing gap are the same number, so the gap can
-              only close by shortening the hold. 100vh keeps ~180px of hold
-              — still a perceptible pin — against a 180px trailing gap,
-              which plus this section's gap-loose reads as a pause before
-              the strip rather than a void. Below ~90vh the pin stops
-              registering as a pin at all. */}
-          <div className="relative h-[100vh]">
-            <div className="sticky top-[20vh] z-10 flex h-[80vh] flex-col justify-center gap-cozy bg-background">
-              <TestimonialBlock
-                quote="We stopped chasing status emails. Every booking, customs file, and exception now lands in one place — and there is a named person behind it."
-                attributionName="Head of global logistics"
-                attributionDetail="Consumer electronics manufacturer"
-              />
-            </div>
-          </div>
-
-          <LogoStrip
-            label="Integrates with"
-            brands={INTEGRATIONS}
-            accent="transit"
-            className="reveal"
-          />
-
-          <div className="reveal flex flex-col gap-cozy">
-            <p className="font-mono text-xs font-medium uppercase tracking-wide text-muted">
-              Certifications and compliance
-            </p>
-            <CertificationsGrid items={CERTIFICATIONS} />
-          </div>
+        {/* The one numbered list on the page: here the order is the
+            information. The copy follows the real flow (PRODUCT.md): the
+            contact form takes a free-text message, a specialist answers it,
+            and tracking is by reference number without an account. */}
+        <section className="flex flex-col gap-comfortable">
+          <h2 className="reveal font-display text-2xl font-semibold text-foreground">
+            How a quote works
+          </h2>
+          <ol className="grid grid-cols-1 gap-comfortable md:grid-cols-3">
+            {QUOTE_STEPS.map((step, index) => (
+              <li key={step.title} className="reveal flex flex-col gap-tight border-t border-border pt-cozy">
+                <span className="font-mono text-xs font-medium text-oxide">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-display text-lg font-semibold text-foreground">{step.title}</h3>
+                <p className="max-w-sm text-sm text-muted">{step.description}</p>
+              </li>
+            ))}
+          </ol>
         </section>
       </div>
 
       <DarkCtaBand
-        eyebrow="Talk to a specialist"
+        eyebrow="Request a quote"
         heading="Tell us the lane. We will tell you the fastest compliant way to move it."
-        meta="Response within one business day · 148 offices · 46 countries"
-        primaryCta={{ label: "Talk to an expert", href: resolveHref("/contact") }}
+        meta="A specialist reviews every request · No automated pricing"
+        primaryCta={{ label: HOME_PRIMARY_ACTION.label, href: resolveHref(HOME_PRIMARY_ACTION.href) }}
         secondaryCta={{ label: "Find a location", href: resolveHref("/locations") }}
       />
     </>

@@ -192,7 +192,7 @@ export const PRIMARY_NAV: PrimaryNavItem[] = [
 export const UTILITY_LINKS: NavLink[] = [
   { label: "Track shipment", href: "/track" },
   { label: "Find a location", href: "/locations" },
-  { label: "Talk to an expert", href: "/contact" },
+  { label: "Talk to a specialist", href: "/contact" },
 ];
 
 export const PORTAL_LINK: NavLink = {
@@ -216,6 +216,15 @@ export function contentImage(slug: string): string | undefined {
 export const DEFAULT_PRIMARY_ACTION: NavLink = { label: "Track shipment", href: "/track" };
 
 /**
+ * The homepage's contextual CTA. The homepage is where prospects arrive, so
+ * it leads with the specialist conversation and leaves tracking as the
+ * secondary path (PRODUCT.md, principle 2). Resolved by path in
+ * `resolveContextualCta`, like the SERVICES/INDUSTRIES overrides, so the
+ * homepage's hero and Header can't drift apart.
+ */
+export const HOME_PRIMARY_ACTION: NavLink = { label: "Talk to a specialist", href: "/contact" };
+
+/**
  * Resolves Header's contextual CTA purely from route data, so Header never
  * needs a hardcoded route string or per-page conditional — adding a new
  * page's CTA (Healthcare, say) means setting `ctaLabel` on its
@@ -228,6 +237,7 @@ export const DEFAULT_PRIMARY_ACTION: NavLink = { label: "Track shipment", href: 
  * live here, so this stays a plain data lookup.
  */
 export function resolveContextualCta(path: string): NavLink | undefined {
+  if (path === "/") return HOME_PRIMARY_ACTION;
   const entry = [...SERVICES, ...INDUSTRIES].find(
     (item) => item.ctaLabel !== undefined && item.href === path,
   );

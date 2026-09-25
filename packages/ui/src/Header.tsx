@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { RefObject } from "react";
 import { buttonClassName } from "./Button";
 import { cx } from "./cx";
+import { touchTarget } from "./touch-target";
 import { Logo } from "./Logo";
 import type { NavLink, PrimaryNavItem } from "./nav-data";
 import {
@@ -299,7 +300,7 @@ function SearchToggle({ resolveHref }: { resolveHref: (href: string) => string }
         aria-expanded={open}
         aria-controls={formId}
         onClick={() => setOpen((o) => !o)}
-        className="flex size-8 items-center justify-center rounded-sm text-muted transition-colors duration-base hover:text-foreground"
+        className="flex size-11 items-center justify-center rounded-sm text-muted transition-colors duration-base hover:text-foreground md:size-8"
       >
         <IconSearch className="size-4" />
         <span className="sr-only">Search</span>
@@ -429,7 +430,7 @@ function MobileMenu({
         <button
           type="button"
           onClick={onClose}
-          className="flex size-9 items-center justify-center rounded-sm text-foreground"
+          className="flex size-11 items-center justify-center rounded-sm text-foreground"
         >
           <IconClose className="size-5" />
           <span className="sr-only">Close menu</span>
@@ -567,7 +568,7 @@ export function Header({
             <a
               href={resolveHref(trackLink.href)}
               aria-label={trackLink.label}
-              className="flex size-8 items-center justify-center rounded-sm text-muted transition-colors duration-base hover:text-foreground md:hidden"
+              className="flex size-11 items-center justify-center rounded-sm text-muted transition-colors duration-base hover:text-foreground md:hidden"
             >
               <IconTrack className="size-4" />
             </a>
@@ -576,7 +577,10 @@ export function Header({
             <SearchToggle resolveHref={resolveHref} />
           </div>
 
-          <a href={resolveHref(resolvedPrimaryAction.href)} className={buttonClassName("primary", "sm")}>
+          <a
+            href={resolveHref(resolvedPrimaryAction.href)}
+            className={buttonClassName("primary", "sm", touchTarget)}
+          >
             {resolvedPrimaryAction.label}
           </a>
 
@@ -586,7 +590,7 @@ export function Header({
             aria-expanded={mobileOpen}
             aria-controls={mobileMenuId}
             onClick={() => setMobileOpen(true)}
-            className="flex size-9 items-center justify-center rounded-sm text-foreground md:hidden"
+            className="flex size-11 items-center justify-center rounded-sm text-foreground md:hidden"
           >
             <IconMenu className="size-5" />
             <span className="sr-only">Open menu</span>

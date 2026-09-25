@@ -244,7 +244,7 @@ The scale is approved and fixed; sizes and line-heights are exactly the `--text-
 
 ## Layout
 
-Contained content column of `max-w-6xl` centered with `px-comfortable`, with full-bleed bands (header, StatBand borders, dark hero, DarkCtaBand) whose inner content stays container-width. Vertical rhythm uses the named spacing tokens: `expansive` (64px) between page sections and as band padding, `loose` (40px) inside sections, `comfortable` (24px) for card padding and section gaps, `cozy` (16px) for control padding and grid gaps, `snug` (10px) for dense controls, `tight` (6px) for icon-to-label gaps, `hairline` (1px) for dividers. Grids collapse from three columns (`lg`) to two (`sm`) to one; StatBand goes from two to four columns at `sm`; the header switches to a mobile menu below `md`, and its main bar may wrap onto two lines below `md` (see Navigation). Body text blocks cap with `max-w-lg` / `max-w-xl`.
+Contained content column of `max-w-6xl` centered with `px-comfortable`, with full-bleed bands (header, dark hero, DarkCtaBand, footer) whose inner content stays container-width. Vertical rhythm uses the named spacing tokens: `expansive` (64px) between page sections and as band padding, `loose` (40px) inside sections, `comfortable` (24px) for card padding and section gaps, `cozy` (16px) for control padding and grid gaps, `snug` (10px) for dense controls, `tight` (6px) for icon-to-label gaps, `hairline` (1px) for dividers. Grids collapse from three columns (`lg`) to two (`sm`) to one; the homepage hero is one column below `lg` and shows the ManifestStrip beside the copy only from `lg`; the header switches to a mobile menu below `md`, and its main bar may wrap onto two lines below `md` (see Navigation). Body text blocks cap with `max-w-lg` / `max-w-xl`.
 
 ## Elevation & Depth
 
@@ -273,6 +273,7 @@ Softly rounded, hairline-bordered forms. Radius scale: `sm` 0.375rem (inputs, sm
 - **Ghost:** transparent, foreground text; hover fills with surface.
 - **Motion:** transitions on background, color, border, shadow and transform over `duration-base` with `ease-standard`; press scales to 0.98; disabled drops to 50% opacity.
 - **Focus:** global 2px transit outline with 2px offset.
+- **Touch target:** a visible `sm` button is 32px and `md` is 40px, so apps/web links styled as buttons pass `touchTarget` (from `@freight/ui`) as `buttonClassName`'s third argument. It grows an invisible `::after` box 6px above and below (sm to 44px, md to 52px) without moving layout or overlapping horizontal neighbours. Button.tsx itself stays unchanged because portal and admin share it.
 
 ### Cards / Containers
 - **Corner Style:** `lg` (1rem).
@@ -295,7 +296,7 @@ Three variants, sized only by a height class (the viewBox is tight, so width fol
 - **Header:** MERIDIAN and FREIGHT on one line, FREIGHT in a lighter, wider-set cut, with the dot closing the line. About 268px wide at 0.9rem tall. Used in the Header from `lg`, and in the Footer at 0.75rem tall.
 - **Primary:** a stacked lockup: MERIDIAN, a 2-unit rule at 55% opacity that carries the dot, then FREIGHT beneath. Exported as a file only; no page renders it yet.
 
-At 0.9rem the cap height is about 14px. The SVG is decorative (`aria-hidden`): the home link around it carries the accessible name "Meridian Freight". In the Footer there is no link, and the copyright line names the company.
+At 0.9rem the cap height is about 14px. The SVG is decorative (`aria-hidden`): the home link around it carries the accessible name "Meridian Freight". In the Footer there is no link, and the demo line ("Meridian Freight is a fictional company. This site is a portfolio demo.") names the company.
 
 Exported files carry literal hex copied from palette.css because a file cannot read CSS variables (a recorded exception to the Token-Only Rule): lockups in `public/brand` (primary on light and dark plus ink and paper monochrome, header and compact on light and dark), and per app an `icon.svg` (paper M and oxide dot on an ink rounded tile), `favicon.ico` and `apple-icon.png`. Web also carries a 1200 by 630 `opengraph-image.jpg` with alt text.
 
@@ -304,7 +305,7 @@ Exported files carry literal hex copied from palette.css because a file cannot r
 **The Decorative-Mark Rule.** Keep every `Logo` `aria-hidden`, and give the link around it an accessible name (`aria-label="Meridian Freight"`). Where no link wraps it, as in the Footer, the adjacent text must name the company. Do not label the SVG itself, and do not ship a logo-only link with no name. Check: every `<Logo` sits inside an element with an `aria-label` or beside text naming the company.
 
 ### Navigation (Header)
-Surface-colored bar with a hairline bottom border. A utility bar (caption size, muted, from `md`) sits above a main bar with the logo (compact below `lg`, header lockup from `lg`, inside a home link named "Meridian Freight"), the primary nav (label size, hover to oxide, from `md`), dropdown panels (`lg` radius, `shadow-lg`), and one contextual primary CTA button (sm). Below `md` the nav becomes a full-screen background-colored menu with a focus trap, and the track, search and menu buttons sit beside the CTA.
+Surface-colored bar with a hairline bottom border. A utility bar (caption size, muted, from `md`) sits above a main bar with the logo (compact below `lg`, header lockup from `lg`, inside a home link named "Meridian Freight"), the primary nav (label size, hover to oxide, from `md`), dropdown panels (`lg` radius, `shadow-lg`), and one contextual primary CTA button (sm, with `touchTarget`). The CTA is resolved from the route by `resolveContextualCta`: "Talk to a specialist" on the homepage (`HOME_PRIMARY_ACTION`), each service or industry page's own specialist label, and "Track shipment" (`DEFAULT_PRIMARY_ACTION`) everywhere else. Below `md` the nav becomes a full-screen background-colored menu with a focus trap, and the icon-only track, search and menu buttons sit beside the CTA as 44px (`size-11`) boxes around 16-20px icons; the search toggle drops back to 32px in the `md`+ utility bar. A visually hidden "Skip to content" link is the first focusable element on every page; it appears top-left on focus (surface, `sm` radius, `shadow-lg`) and targets `<main id="main">`.
 
 The main bar wraps below `md` and never from `md` up. The logo is a fixed-width drawing and cannot wrap like text, so when it and the actions cluster no longer fit on one line (under about 447px) the logo keeps the first line and the actions cluster moves to a second line, right-aligned.
 
@@ -312,25 +313,30 @@ The main bar wraps below `md` and never from `md` up. The logo is a fixed-width 
 Bordered `lg`-radius region, surface header with caption-size uppercase muted column labels, hairline row dividers, `hover:bg-border/10` rows. Data columns render in Plex Mono. Loading uses skeleton bars (`full` radius); edge fades hint at horizontal scroll.
 
 ### StatBand
-Full-bleed `border-y` row on the background color; 2 to 4 columns with hairline dividers; figures in Plex Mono 600 (`text-3xl`, `text-4xl` from `sm`).
+Full-bleed `border-y` row on the background color; 2 to 4 columns with hairline dividers; figures in Plex Mono 600 (`text-3xl`, `text-4xl` from `sm`). Still exported from `@freight/ui`, but no page renders it: the homepage's figures were unverified, and the band returns only with real numbers.
 
 ### ManifestStrip (signature)
-A Card-like panel (`lg`, border, `shadow-sm`) styled as a tracking feed: mono references, coordinates and timestamps; status dots in transit / delivered / muted / danger; oxide live dot. Rows fade and translate 6px as they enter and leave.
+A Card-like panel (`lg`, border, `shadow-sm`) styled as a shipment manifest and labelled as a sample: a header row reading "Sample manifest" on the left and "Illustrative data" on the right, both caption-size uppercase Plex Mono in the foreground color, then hairline-divided rows of a static status dot (transit / delivered / muted / danger) with its label, a mono reference, coordinates (from `sm`) and a UTC time of day. The rows are a fixed sample set (`maxRows`, default 5), so the component is static and server-rendered, complete on first paint, with no hooks. The rows are `aria-hidden` behind one sr-only line that says it is not a live feed. On the homepage it is shown only from `lg`.
+
+**The Sample-Not-Live Rule.** Public tracking has no live feed behind it, so sample data never moves: no pulsing dots, no cycling rows, no running counts, and the panel always carries a visible "Illustrative data" label.
 
 ### LaneTicker (signature)
-A hairline-topped strip of mono lane pairs (caption size, uppercase, muted), content rendered twice for a seamless -50% loop.
+A hairline-topped strip of mono lane pairs (caption size, uppercase, muted) with `py-snug` padding, content rendered twice for a seamless -50% loop.
 
 ### DarkCtaBand
-A `data-mode="dark"` band on the background token: `py-expansive`, Archivo heading (`text-2xl`, `text-3xl` from `sm`), primary plus secondary button, muted mono meta line.
+A `data-mode="dark"` band on the background token: `py-expansive`, Archivo heading (`text-2xl`, `text-3xl` from `sm`), primary plus secondary button (both with `touchTarget`), muted mono meta line. On the homepage the meta line states the process ("A specialist reviews every request · No automated pricing"), not footprint figures.
+
+### Process steps (signature)
+The homepage's "How a quote works" block: an Archivo `h2` over an ordered list, one column that becomes three from `md` (`gap-comfortable`). Each step sits under a hairline top rule (`pt-cozy`, `gap-tight`) with a caption-size Plex Mono step number in oxide (01, 02, 03), an `h3` Archivo title (`text-lg`) and a muted `text-sm` description capped at `max-w-sm`. It is the one numbered list on the page, because here the order is the information. The copy follows the real flow: a free-text inquiry, a specialist's review with no rate engine, then a quote back and tracking by reference number.
 
 ### Textarea
 Sibling of Input: label above (label style, 6px gap, required marker in `danger`), minimum height 8rem, `sm` radius, 1px border, surface fill, `px-cozy` and `py-snug`, placeholder in muted. Focus shifts the border to transit; the error state turns the border `danger` and shows a caption-size `danger` message announced as an alert. Transitions run over `duration-base` with `ease-standard`.
 
 ### Footer
-A surface-colored band with a hairline top border, holding a contained `max-w-6xl` column (`px-comfortable`, `py-loose`, `gap-loose`) with one Company link column and a bottom bar. The column heading is caption size, semibold, uppercase, tracked and muted; links are label size in the foreground color and hover to oxide over `duration-base`. The bottom bar sits under a hairline: the header lockup of the logo at 0.75rem tall and the copyright in Plex Mono at caption size, muted. It stacks below `sm` and sits on one row from `sm`.
+A surface-colored band with a hairline top border, holding a contained `max-w-6xl` column (`px-comfortable`, `py-loose`, `gap-loose`) with three link columns (one column below `sm`, three from `sm`): Services, "Get in touch" (the utility row's track, locations and specialist links), and Company, which is the only place Careers appears. Then a bottom bar. The column heading is caption size, semibold, uppercase, tracked and muted; links are label size in the foreground color and hover to oxide over `duration-base`. The bottom bar sits under a hairline: the header lockup of the logo at 0.75rem tall and the demo line in Plex Mono at caption size, muted. It stacks below `sm` and sits on one row from `sm`.
 
 ### LogoStrip
-A labelled row of placeholder logotypes in a two-column grid that becomes four columns from `sm` (`gap-x-comfortable`, `gap-y-loose`). Each mark is a 36px-tall inline SVG: one of six geometric glyphs (chevron, hex, bar, ring, arc, slash) plus the name as real SVG text in Archivo, set at that brand's own width, weight and tracking. A strip carries one accent and nothing else colors it: customers resolve to `oxide`, integrations to `transit`. On hover-capable pointers the marks rest in `mist` and take the accent on hover or focus-within; coarse pointers get the accent immediately. The names are invented placeholders, and each strip says so in a visually hidden line.
+A labelled row of placeholder logotypes in a two-column grid that becomes four columns from `sm` (`gap-x-comfortable`, `gap-y-loose`). Each mark is a 36px-tall inline SVG: one of six geometric glyphs (chevron, hex, bar, ring, arc, slash) plus the name as real SVG text in Archivo, set at that brand's own width, weight and tracking. A strip carries one accent and nothing else colors it: customers resolve to `oxide`, integrations to `transit`. On hover-capable pointers the marks rest in `mist` and take the accent on hover or focus-within; coarse pointers get the accent immediately. The names are invented placeholders, and each strip says so in a visually hidden line. Still exported from `@freight/ui`, but no page renders it: invented customers and integrations are not shown as evidence.
 
 ### Detail page template (service and industry pages)
 A `max-w-6xl` column with `expansive` (64px) between four blocks.
@@ -343,19 +349,19 @@ A `max-w-6xl` column with `expansive` (64px) between four blocks.
 Photographs are decorative (empty alt text), cropped with `object-cover` inside a fixed frame, and served from `apps/web/public/images/` (`hero.jpg`, `services/`, `industries/`) as AVIF or WebP.
 - **Hero image with overlay:** the homepage hero (a `data-mode="dark"` section) sits on a full-bleed photograph behind its grid and ticker, preloaded and cropped with `object-cover`. Below `lg` a flat `background` overlay at 90% keeps the full-width text legible. From `lg`, where the text sits on the left, the overlay becomes a left-to-right gradient from `background` through `background` at 90% to `background` at 30%, so the photograph opens up toward the tracking panel.
 - **Ticker backing strip:** the lane ticker inside the hero is backed by `background` at 85%, so its mono lane text reads over the photograph while the image still shows faintly through.
-- **Service cards (wallet stack):** horizontal cards, one per row, each `position: sticky` with `top` at 10vh plus 40px per card and a rising z-index, so later cards overlap earlier ones. Below `md` a card stacks with a 16:9 image on top; from `md` it is a row with the image filling the left 40%, cropped to the card's rounded corners, and a minimum height of 14rem. `md` radius, 1px border. The first card is the highlight: `oxide-soft` fill with an oxide 30% border. The others sit on the surface color and hover to a `mist` border.
-- **Industry cards:** `md`-radius bordered surface cards in a grid (one column, two from `sm`, three from `lg`, `gap-cozy`), each opening with a 16:9 image (`md` radius, clipped) above an Archivo title and muted description. Hover lifts the card 2px and turns the border oxide.
+- **Service cards (wallet stack):** horizontal cards with `h3` titles and no card numbers, one per row, each `position: sticky` with `top` at 10vh plus 40px per card and a rising z-index, so later cards overlap earlier ones. Below `md` a card stacks with a 16:9 image on top; from `md` it is a row with the image filling the left 40%, cropped to the card's rounded corners, and a minimum height of 14rem. `md` radius, 1px border. The first card is the highlight: `oxide-soft` fill with an oxide 30% border. The others sit on the surface color and hover to a `mist` border.
+- **Industry cards:** `md`-radius bordered surface cards in a grid (one column, two from `sm`, three from `lg`, `gap-cozy`), each opening with a 16:9 image (`md` radius, clipped) above an `h3` Archivo title and muted description. Hover lifts the card 2px and turns the border oxide. With five industries the first card spans two columns from `sm`, with a 4:1 crop so its image matches the row, and every row fills (2+2+2 at `sm`, 3+3 at `lg`). A different count needs a different span.
 - **ContentCard with image:** a Card (`lg`) whose first element is a 16:9 image clipped to `md`, then an Archivo `text-lg` title and a muted description. Hover shifts the border to `mist`. Without an image it falls back to a 2.5rem monogram tile (Plex Mono, `md` radius, hairline border).
 
 ### Motion
 - **Easing and durations:** `ease-standard` `cubic-bezier(0.2, 0, 0, 1)` (precise settle, no overshoot); `duration-fast` 120ms (press); `duration-base` 180ms (hover and focus).
-- **pulse-dot:** `2.6s ease-in-out infinite`, opacity 1 to 0.55 and scale 1 to 0.82. Used on live dots in ManifestStrip.
+- **pulse-dot:** `2.6s ease-in-out infinite`, opacity 1 to 0.55 and scale 1 to 0.82. Still defined in theme.css, but nothing uses it since ManifestStrip became a static sample (see the Sample-Not-Live Rule).
 - **skeleton-shimmer:** `1.6s ease-in-out infinite` sweep over `--color-border`. Used in Table.
 - **Reduced motion, CSS level:** reset.css sets `animation-duration` and `transition-duration` to 0.01ms, iteration count to 1 and `scroll-behavior: auto` under `prefers-reduced-motion: reduce`. The lane ticker is gated in CSS by `@media (prefers-reduced-motion: no-preference)` and `@supports (animation-timeline: scroll())`, because the blanket override cannot stop a scroll-bound animation; otherwise it renders as a static strip.
 - **Scroll reveal (`.reveal`):** the `reveal-up` keyframes fade a block in from opacity 0 and 1rem (`spacing-cozy`) below its resting place. The animation is bound to scroll position, not a timer: `animation-timeline: view()` over `animation-range: entry 0% entry 4rem` (the first `spacing-expansive` of scroll after the block's leading edge enters the viewport), with `ease-standard` as the timing function. The fill is `backwards`, not `both`, so once the range ends the block returns to its natural style; `both` would leave an identity `transform` on every revealed block, which is still a stacking context and a containing block. The timeline is scroll position, so the reveal runs in reverse when the visitor scrolls back up.
 - **Reveal gating:** the whole rule sits inside `@media screen and (prefers-reduced-motion: no-preference)` and `@supports (animation-timeline: view())`. Reduced-motion visitors, browsers without scroll timelines (Firefox stable) and print output (the `screen` media type keeps print from inheriting the hidden state) all see the content untouched. `animation-timeline` ships in Chromium 115+ and Safari 26+, per the note in theme.css.
-- **Reveal placement:** used only on the homepage, below the hero: the "01 — Services" and "02 — Industries" heading rows, each industry card, the "Integrates with" LogoStrip and the certifications block. It is never used on anything already in view at load or on any ancestor of a sticky element, which is why the wallet stack of service cards is not revealed.
-- **Reduced motion, component-level JS guards:** pulse-dot and skeleton-shimmer rely on a JS `prefers-reduced-motion` check in ManifestStrip and Table (flat `--color-border` fill for the skeleton, static dots), per theme.css's own comments. ManifestStrip also stops its interval row insertion under reduced motion.
+- **Reveal placement:** used only on the homepage, below the hero: the Services and Industries heading rows, each industry card, the "How a quote works" heading and each of its steps. It is never used on anything already in view at load or on any ancestor of a sticky element, which is why the wallet stack of service cards is not revealed.
+- **Reduced motion, component-level JS guards:** skeleton-shimmer relies on a JS `prefers-reduced-motion` check in Table (flat `--color-border` fill), per theme.css's own comments. ManifestStrip no longer animates, so it needs no guard.
 
 ## Do's and Don'ts
 
@@ -367,6 +373,8 @@ Photographs are decorative (empty alt text), cropped with `object-cover` inside 
 - **Do** use the named spacing and radius tokens and the `--shadow-*` tokens.
 - **Do** transition with `ease-standard` over `duration-base` or `duration-fast`, and provide a reduced-motion path for every animation.
 - **Do** put `.reveal` only on blocks that start below the fold, and keep it off any ancestor of a sticky element.
+- **Do** number items only where the order is the information, like the quote steps; section labels and card lists stay unnumbered.
+- **Do** give every touch control a 44px hit area: `size-11` for icon buttons, `touchTarget` for button-styled links, an `::after` inset for small text links.
 - **Do** render the brand through the `Logo` component (compact below `lg` in the Header, header lockup from `lg` and in the Footer), and give the link around it the accessible name.
 
 ### Don't:
@@ -379,3 +387,4 @@ Photographs are decorative (empty alt text), cropped with `object-cover` inside 
 - **Don't** put `.reveal` on anything already in view at load or on an ancestor of a sticky element such as the wallet stack.
 - **Don't** set the brand in live text, recolor the logo with a literal color, or edit its path data.
 - **Don't** use a dark cast shadow inside a dark section.
+- **Don't** make sample data look live (pulsing dots, cycling rows, running counts), and don't show invented figures, logos, quotes or certifications as evidence.
