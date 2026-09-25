@@ -147,7 +147,7 @@ export default async function Page() {
             {SERVICES.map((service, index) => (
               <div
                 key={service.slug}
-                className={`sticky flex flex-col rounded-md border transition-colors duration-base md:min-h-56 md:flex-row ${
+                className={`sticky flex flex-col rounded-lg border transition-colors duration-base md:min-h-56 md:flex-row ${
                   index === 0
                     ? "border-oxide/30 bg-oxide-soft"
                     : "border-border bg-surface hover:border-mist"
@@ -157,7 +157,7 @@ export default async function Page() {
                 {/* Image wrapper has no intrinsic height at md+: the row's
                     text column sets the card height and the image crops to it. */}
                 {service.image ? (
-                  <div className="relative aspect-video shrink-0 overflow-hidden rounded-t-md md:aspect-auto md:w-2/5 md:rounded-l-md md:rounded-tr-none">
+                  <div className="relative aspect-video shrink-0 overflow-hidden rounded-t-lg md:aspect-auto md:w-2/5 md:rounded-l-lg md:rounded-tr-none">
                     <Image
                       src={service.image}
                       alt=""
@@ -214,7 +214,7 @@ export default async function Page() {
                 href={resolveHref(industry.href)}
                 className={`reveal block h-full ${index === 0 ? "sm:col-span-2" : ""}`}
               >
-                <div className="flex h-full flex-col gap-cozy rounded-md border border-border bg-surface p-comfortable transition-[border-color,transform] duration-base hover:-translate-y-0.5 hover:border-oxide">
+                <div className="flex h-full flex-col gap-cozy rounded-lg border border-border bg-surface p-comfortable transition-[border-color,transform] duration-base hover:-translate-y-0.5 hover:border-oxide">
                   {industry.image ? (
                     <div
                       className={`relative aspect-video overflow-hidden rounded-md ${index === 0 ? "sm:aspect-[4/1]" : ""}`}
