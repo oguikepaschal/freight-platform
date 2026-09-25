@@ -486,7 +486,7 @@ export default function StyleGuidePage() {
 
       <Section
         title="Header"
-        description="Utility actions (Track, Find a location, Talk to an expert, Search, Portal login) are fixed content, not a prop — a page can't grow that row. The contextual primary CTA is the one thing a page configures, via primaryAction; it always renders oxide-filled and visually heavier than the utility row. The two previews below are the same Header, differing only in that prop, to make the distinction visible."
+        description="Utility actions (Track, Find a location, Talk to a specialist, Search, Portal login) are fixed content, not a prop — a page can't grow that row. The contextual primary CTA is the one thing a page configures, via primaryAction; it always renders oxide-filled and visually heavier than the utility row. The two previews below are the same Header, differing only in that prop, to make the distinction visible."
       >
         <div className="flex flex-col gap-cozy">
           <div className="flex flex-col gap-tight">

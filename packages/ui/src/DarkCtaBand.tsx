@@ -1,5 +1,6 @@
 import { buttonClassName } from "./Button";
 import { cx } from "./cx";
+import { touchTarget } from "./touch-target";
 
 export interface DarkCtaBandProps {
   eyebrow?: string;
@@ -44,11 +45,11 @@ export function DarkCtaBand({
         </div>
         <div className="flex flex-col items-start gap-cozy">
           <div className="flex flex-wrap gap-cozy">
-            <a href={primaryCta.href} className={buttonClassName("primary", "md")}>
+            <a href={primaryCta.href} className={buttonClassName("primary", "md", touchTarget)}>
               {primaryCta.label}
             </a>
             {secondaryCta ? (
-              <a href={secondaryCta.href} className={buttonClassName("secondary", "md")}>
+              <a href={secondaryCta.href} className={buttonClassName("secondary", "md", touchTarget)}>
                 {secondaryCta.label}
               </a>
             ) : null}

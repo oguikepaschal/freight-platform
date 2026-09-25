@@ -35,7 +35,7 @@ export function LaneTicker({ lanes, className }: LaneTickerProps) {
   );
 
   return (
-    <div className={cx("overflow-hidden border-t border-border", className)}>
+    <div className={cx("overflow-hidden border-t border-border py-snug", className)}>
       <span className="sr-only">Sample trade lanes (decorative)</span>
       <div aria-hidden="true" className="lane-ticker-track flex w-max">
         {track}

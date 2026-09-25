@@ -82,9 +82,11 @@ export {
   UTILITY_LINKS,
   PORTAL_LINK,
   DEFAULT_PRIMARY_ACTION,
+  HOME_PRIMARY_ACTION,
   COMPANY_LINKS,
 } from "./nav-data";
 export type { NavLink, PrimaryNavItem, ContentNavLink } from "./nav-data";
 
 export { CUSTOMERS, INTEGRATIONS } from "./partner-data";
 export type { Brand, BrandGlyph } from "./partner-data";
+export { touchTarget } from "./touch-target";
