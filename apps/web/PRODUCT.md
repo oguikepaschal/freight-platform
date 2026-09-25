@@ -50,7 +50,7 @@ Known exceptions to constraint 1:
 
 ## Brand Commitments
 
-- Working name: Meridian Freight (logo direction chosen, not yet implemented).
+- Working name: Meridian Freight (logo implemented).
 - Portfolio and demo build. The working name is used by other freight companies, so do not present this as a real company.
 - Direction, as given: premium, global, technological, precise, trustworthy, industrial without feeling dated, data-driven.
 - An independent brand language, not a copy of Kuehne+Nagel. Its structure and breadth are the reference; its visual identity and specific copy are not.

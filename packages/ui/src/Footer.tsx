@@ -1,5 +1,6 @@
 import type { HTMLAttributes, Ref } from "react";
 import { cx } from "./cx";
+import { Logo } from "./Logo";
 import type { NavLink } from "./nav-data";
 import { COMPANY_LINKS } from "./nav-data";
 
@@ -60,9 +61,7 @@ export function Footer({ className, ref, resolveHref = (href) => href, ...props 
         </div>
 
         <div className="flex flex-col gap-tight border-t border-border pt-comfortable sm:flex-row sm:items-center sm:justify-between">
-          <span className="font-display text-sm font-semibold text-foreground">
-            Meridian Freight
-          </span>
+          <Logo variant="header" className="h-3 w-auto text-foreground" />
           <p className="font-mono text-xs text-muted">
             &copy; {new Date().getFullYear()} Meridian Freight. All rights reserved.
           </p>

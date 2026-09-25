@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { RefObject } from "react";
 import { buttonClassName } from "./Button";
 import { cx } from "./cx";
+import { Logo } from "./Logo";
 import type { NavLink, PrimaryNavItem } from "./nav-data";
 import {
   DEFAULT_PRIMARY_ACTION,
@@ -530,9 +531,14 @@ export function Header({
       </div>
 
       {/* Main bar: logo, primary nav, contextual CTA. */}
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-cozy px-comfortable py-snug">
-        <a href={resolveHref("/")} className="font-display text-lg font-semibold text-foreground">
-          Meridian Freight
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-cozy gap-y-tight px-comfortable py-snug md:flex-nowrap">
+        <a href={resolveHref("/")} aria-label="Meridian Freight" className="shrink-0 text-foreground">
+          <span className="block lg:hidden">
+            <Logo variant="compact" className="h-[0.9rem] w-auto" />
+          </span>
+          <span className="hidden lg:block">
+            <Logo variant="header" className="h-[0.9rem] w-auto" />
+          </span>
         </a>
 
         <nav aria-label="Primary" className="hidden items-center gap-tight md:flex">
@@ -554,7 +560,7 @@ export function Header({
           )}
         </nav>
 
-        <div className="flex items-center gap-tight">
+        <div className="ml-auto flex items-center gap-tight md:ml-0">
           {/* Homepage hot paths (per Project_Overview.md): reachable without
               opening the mobile menu, not just tucked inside it. */}
           {trackLink ? (
