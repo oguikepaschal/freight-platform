@@ -165,7 +165,8 @@ apps/web is always light: paper background, chalk surfaces, ink text. Dark secti
 - Semantic tokens only in components; in code, hex exists solely in palette.css.
 - Archivo display headings (wdth 112, 600) over IBM Plex Sans body and IBM Plex Mono data.
 - Contained `max-w-6xl` column with full-bleed bands for chrome.
-- Restrained motion: short eased transitions, no bounce or elastic easing.
+- A token-only logo: the word MERIDIAN as Archivo outlines in `currentColor`, closed by a single oxide dot.
+- Restrained motion: short eased transitions and a scroll-bound entrance reveal, no bounce or elastic easing.
 
 ## Colors
 
@@ -173,7 +174,7 @@ Cool slate neutrals with one warm oxide accent and three cool status hues. Every
 
 ### Primary
 - **Oxide** (`oxide`): the solid brand fill, used as the full-bleed primary button background, always with chalk text (never ink).
-- **Oxide on light** (`oxide-on-light`): text, links, hover states and rules on paper and chalk. Resolves to `--color-oxide` in light mode.
+- **Oxide on light** (`oxide-on-light`): text, links, hover states, rules and the logo dot on paper and chalk. Resolves to `--color-oxide` in light mode.
 - **Oxide on dark** (`oxide-on-dark`): the same role inside a dark section. Resolves to `--color-oxide` under `data-mode="dark"`.
 
 ### Secondary (status, never brand)
@@ -228,7 +229,7 @@ The scale is approved and fixed; sizes and line-heights are exactly the `--text-
 - **Headline large / `text-3xl`** (600, 2.25rem, 1.15): hero subheads; DarkCtaBand heading from `sm` up.
 - **Headline / `text-2xl`** (600, 1.75rem, 1.25): page and section headings.
 - **Title large / `text-xl`** (1.375rem, 1.35): section headings.
-- **Title / `text-lg`** (600, 1.125rem, 1.5): card titles, logo wordmark, lead paragraphs.
+- **Title / `text-lg`** (600, 1.125rem, 1.5): card titles, lead paragraphs.
 - **Body / `text-base`** (400, 0.9375rem, 1.6): default body copy; set on `body`.
 - **Label / `text-sm`** (500, 0.8125rem, 1.45): form labels, secondary UI text, button text (md), nav links.
 - **Caption / `text-xs`** (0.75rem, 1.4): timestamps, meta, table captions, button text (sm), badges.
@@ -243,7 +244,7 @@ The scale is approved and fixed; sizes and line-heights are exactly the `--text-
 
 ## Layout
 
-Contained content column of `max-w-6xl` centered with `px-comfortable`, with full-bleed bands (header, StatBand borders, dark hero, DarkCtaBand) whose inner content stays container-width. Vertical rhythm uses the named spacing tokens: `expansive` (64px) between page sections and as band padding, `loose` (40px) inside sections, `comfortable` (24px) for card padding and section gaps, `cozy` (16px) for control padding and grid gaps, `snug` (10px) for dense controls, `tight` (6px) for icon-to-label gaps, `hairline` (1px) for dividers. Grids collapse from three columns (`lg`) to two (`sm`) to one; StatBand goes from two to four columns at `sm`; the header switches to a mobile menu below `md`. Body text blocks cap with `max-w-lg` / `max-w-xl`.
+Contained content column of `max-w-6xl` centered with `px-comfortable`, with full-bleed bands (header, StatBand borders, dark hero, DarkCtaBand) whose inner content stays container-width. Vertical rhythm uses the named spacing tokens: `expansive` (64px) between page sections and as band padding, `loose` (40px) inside sections, `comfortable` (24px) for card padding and section gaps, `cozy` (16px) for control padding and grid gaps, `snug` (10px) for dense controls, `tight` (6px) for icon-to-label gaps, `hairline` (1px) for dividers. Grids collapse from three columns (`lg`) to two (`sm`) to one; StatBand goes from two to four columns at `sm`; the header switches to a mobile menu below `md`, and its main bar may wrap onto two lines below `md` (see Navigation). Body text blocks cap with `max-w-lg` / `max-w-xl`.
 
 ## Elevation & Depth
 
@@ -286,8 +287,26 @@ Softly rounded, hairline-bordered forms. Radius scale: `sm` 0.375rem (inputs, sm
 ### Badges
 Pill (`full`) with 1px border at 30% of the state hue, `-soft` fill and matching text, plus a 6px status dot. Variants map to real states: in-transit, cleared, neutral (transparent, border and muted text).
 
+### Logo (signature)
+The mark is the word MERIDIAN in extended Archivo letterforms, converted to outlines, closed by one oxide dot that sits on the baseline. It is a token-only component (`Logo`, exported from `@freight/ui`) that draws SVG paths: the wordmark takes `currentColor` and the dot takes `fill-oxide`, so both follow the surrounding text color and the nearest `data-mode`. The dot is on-light oxide (`#a34a22`) in a light section and on-dark oxide (`#e08a5a`) inside a dark wrapper. The path data is generated from the exported SVGs and is never edited by hand.
+
+Three variants, sized only by a height class (the viewBox is tight, so width follows):
+- **Compact:** MERIDIAN and the dot. About 148px wide at 0.9rem tall. Used in the Header below `lg`, and in the shared AppShell of portal and admin at every width.
+- **Header:** MERIDIAN and FREIGHT on one line, FREIGHT in a lighter, wider-set cut, with the dot closing the line. About 268px wide at 0.9rem tall. Used in the Header from `lg`, and in the Footer at 0.75rem tall.
+- **Primary:** a stacked lockup: MERIDIAN, a 2-unit rule at 55% opacity that carries the dot, then FREIGHT beneath. Exported as a file only; no page renders it yet.
+
+At 0.9rem the cap height is about 14px. The SVG is decorative (`aria-hidden`): the home link around it carries the accessible name "Meridian Freight". In the Footer there is no link, and the copyright line names the company.
+
+Exported files carry literal hex copied from palette.css because a file cannot read CSS variables (a recorded exception to the Token-Only Rule): lockups in `public/brand` (primary on light and dark plus ink and paper monochrome, header and compact on light and dark), and per app an `icon.svg` (paper M and oxide dot on an ink rounded tile), `favicon.ico` and `apple-icon.png`. Web also carries a 1200 by 630 `opengraph-image.jpg` with alt text.
+
+**The Currentcolor-Plus-Oxide Rule.** Render the brand only through `Logo`, with the wordmark in `currentColor` and the dot in `fill-oxide`. Do not set the brand in live text, pass any other fill or a literal color, or edit the path data. Check: `Logo.tsx` contains no hex, rgb or hsl value, and the only fill class in it is `fill-oxide`.
+
+**The Decorative-Mark Rule.** Keep every `Logo` `aria-hidden`, and give the link around it an accessible name (`aria-label="Meridian Freight"`). Where no link wraps it, as in the Footer, the adjacent text must name the company. Do not label the SVG itself, and do not ship a logo-only link with no name. Check: every `<Logo` sits inside an element with an `aria-label` or beside text naming the company.
+
 ### Navigation (Header)
-Surface-colored bar with a hairline bottom border; a utility bar (caption size, muted) above a main bar with the Archivo wordmark, primary nav (label size, hover to oxide), dropdown panels (`lg` radius, `shadow-lg`), and one contextual primary CTA button (sm). Below `md`, a full-screen background-colored menu with a focus trap.
+Surface-colored bar with a hairline bottom border. A utility bar (caption size, muted, from `md`) sits above a main bar with the logo (compact below `lg`, header lockup from `lg`, inside a home link named "Meridian Freight"), the primary nav (label size, hover to oxide, from `md`), dropdown panels (`lg` radius, `shadow-lg`), and one contextual primary CTA button (sm). Below `md` the nav becomes a full-screen background-colored menu with a focus trap, and the track, search and menu buttons sit beside the CTA.
+
+The main bar wraps below `md` and never from `md` up. The logo is a fixed-width drawing and cannot wrap like text, so when it and the actions cluster no longer fit on one line (under about 447px) the logo keeps the first line and the actions cluster moves to a second line, right-aligned.
 
 ### Table
 Bordered `lg`-radius region, surface header with caption-size uppercase muted column labels, hairline row dividers, `hover:bg-border/10` rows. Data columns render in Plex Mono. Loading uses skeleton bars (`full` radius); edge fades hint at horizontal scroll.
@@ -308,7 +327,7 @@ A `data-mode="dark"` band on the background token: `py-expansive`, Archivo headi
 Sibling of Input: label above (label style, 6px gap, required marker in `danger`), minimum height 8rem, `sm` radius, 1px border, surface fill, `px-cozy` and `py-snug`, placeholder in muted. Focus shifts the border to transit; the error state turns the border `danger` and shows a caption-size `danger` message announced as an alert. Transitions run over `duration-base` with `ease-standard`.
 
 ### Footer
-A surface-colored band with a hairline top border, holding a contained `max-w-6xl` column (`px-comfortable`, `py-loose`, `gap-loose`) with one Company link column and a bottom bar. The column heading is caption size, semibold, uppercase, tracked and muted; links are label size in the foreground color and hover to oxide over `duration-base`. The bottom bar sits under a hairline: the wordmark in Archivo (label size, semibold) and the copyright in Plex Mono at caption size, muted. It stacks below `sm` and sits on one row from `sm`.
+A surface-colored band with a hairline top border, holding a contained `max-w-6xl` column (`px-comfortable`, `py-loose`, `gap-loose`) with one Company link column and a bottom bar. The column heading is caption size, semibold, uppercase, tracked and muted; links are label size in the foreground color and hover to oxide over `duration-base`. The bottom bar sits under a hairline: the header lockup of the logo at 0.75rem tall and the copyright in Plex Mono at caption size, muted. It stacks below `sm` and sits on one row from `sm`.
 
 ### LogoStrip
 A labelled row of placeholder logotypes in a two-column grid that becomes four columns from `sm` (`gap-x-comfortable`, `gap-y-loose`). Each mark is a 36px-tall inline SVG: one of six geometric glyphs (chevron, hex, bar, ring, arc, slash) plus the name as real SVG text in Archivo, set at that brand's own width, weight and tracking. A strip carries one accent and nothing else colors it: customers resolve to `oxide`, integrations to `transit`. On hover-capable pointers the marks rest in `mist` and take the accent on hover or focus-within; coarse pointers get the accent immediately. The names are invented placeholders, and each strip says so in a visually hidden line.
@@ -333,6 +352,9 @@ Photographs are decorative (empty alt text), cropped with `object-cover` inside 
 - **pulse-dot:** `2.6s ease-in-out infinite`, opacity 1 to 0.55 and scale 1 to 0.82. Used on live dots in ManifestStrip.
 - **skeleton-shimmer:** `1.6s ease-in-out infinite` sweep over `--color-border`. Used in Table.
 - **Reduced motion, CSS level:** reset.css sets `animation-duration` and `transition-duration` to 0.01ms, iteration count to 1 and `scroll-behavior: auto` under `prefers-reduced-motion: reduce`. The lane ticker is gated in CSS by `@media (prefers-reduced-motion: no-preference)` and `@supports (animation-timeline: scroll())`, because the blanket override cannot stop a scroll-bound animation; otherwise it renders as a static strip.
+- **Scroll reveal (`.reveal`):** the `reveal-up` keyframes fade a block in from opacity 0 and 1rem (`spacing-cozy`) below its resting place. The animation is bound to scroll position, not a timer: `animation-timeline: view()` over `animation-range: entry 0% entry 4rem` (the first `spacing-expansive` of scroll after the block's leading edge enters the viewport), with `ease-standard` as the timing function. The fill is `backwards`, not `both`, so once the range ends the block returns to its natural style; `both` would leave an identity `transform` on every revealed block, which is still a stacking context and a containing block. The timeline is scroll position, so the reveal runs in reverse when the visitor scrolls back up.
+- **Reveal gating:** the whole rule sits inside `@media screen and (prefers-reduced-motion: no-preference)` and `@supports (animation-timeline: view())`. Reduced-motion visitors, browsers without scroll timelines (Firefox stable) and print output (the `screen` media type keeps print from inheriting the hidden state) all see the content untouched. `animation-timeline` ships in Chromium 115+ and Safari 26+, per the note in theme.css.
+- **Reveal placement:** used only on the homepage, below the hero: the "01 — Services" and "02 — Industries" heading rows, each industry card, the "Integrates with" LogoStrip and the certifications block. It is never used on anything already in view at load or on any ancestor of a sticky element, which is why the wallet stack of service cards is not revealed.
 - **Reduced motion, component-level JS guards:** pulse-dot and skeleton-shimmer rely on a JS `prefers-reduced-motion` check in ManifestStrip and Table (flat `--color-border` fill for the skeleton, static dots), per theme.css's own comments. ManifestStrip also stops its interval row insertion under reduced motion.
 
 ## Do's and Don'ts
@@ -344,6 +366,8 @@ Photographs are decorative (empty alt text), cropped with `object-cover` inside 
 - **Do** use Archivo (wdth 112, 600, -0.015em) for h1-h3, Plex Sans for UI text, Plex Mono with tabular figures for references, coordinates and timestamps.
 - **Do** use the named spacing and radius tokens and the `--shadow-*` tokens.
 - **Do** transition with `ease-standard` over `duration-base` or `duration-fast`, and provide a reduced-motion path for every animation.
+- **Do** put `.reveal` only on blocks that start below the fold, and keep it off any ancestor of a sticky element.
+- **Do** render the brand through the `Logo` component (compact below `lg` in the Header, header lockup from `lg` and in the Footer), and give the link around it the accessible name.
 
 ### Don't:
 - **Don't** write a hex or rgba value outside palette.css, or use a Tailwind default color.
@@ -352,4 +376,6 @@ Photographs are decorative (empty alt text), cropped with `object-cover` inside 
 - **Don't** pair oxide solid with ink text.
 - **Don't** add or swap typefaces, or change the approved type scale.
 - **Don't** use bounce or elastic easing, or an animation with no reduced-motion path.
+- **Don't** put `.reveal` on anything already in view at load or on an ancestor of a sticky element such as the wallet stack.
+- **Don't** set the brand in live text, recolor the logo with a literal color, or edit its path data.
 - **Don't** use a dark cast shadow inside a dark section.
