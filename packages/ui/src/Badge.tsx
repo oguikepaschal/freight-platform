@@ -31,7 +31,7 @@ export function Badge({ variant = "neutral", className, children, ref, ...props 
     <span
       ref={ref}
       className={cx(
-        "inline-flex items-center gap-tight rounded-full border px-snug py-[0.1875rem] font-sans text-xs font-medium leading-none",
+        "inline-flex items-center gap-tight rounded-full border px-snug py-0.75 font-sans text-xs font-medium leading-none",
         styles[variant],
         className,
       )}

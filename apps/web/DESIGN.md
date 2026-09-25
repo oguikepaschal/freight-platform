@@ -262,7 +262,7 @@ Hybrid, tonal first. Light surfaces step from paper to chalk with a `fog` hairli
 
 ## Shapes
 
-Softly rounded, hairline-bordered forms. Radius scale: `sm` 0.375rem (inputs, small buttons, nav links, focus ring), `md` 0.625rem (buttons, service and industry cards, image crops), `lg` 1rem (Card, panels, dropdowns, tables, ManifestStrip), `full` 999px (badges, status dots, skeleton bars). Borders are 1px `--color-border`; hover on cards shifts the border to `mist` (or `oxide` on homepage industry cards). Images sit in `aspect-video` crops with `object-cover`.
+Softly rounded, hairline-bordered forms. Radius scale: `sm` 0.375rem (inputs, small buttons, nav links, focus ring), `md` 0.625rem (buttons, image crops, monogram tiles), `lg` 1rem (Card, service and industry cards, panels, dropdowns, tables, ManifestStrip), `full` 999px (badges, status dots, skeleton bars). Borders are 1px `--color-border`; hover on cards shifts the border to `mist` (or `oxide` on homepage industry cards). Images sit in `aspect-video` crops with `object-cover`.
 
 ## Components
 
