@@ -533,10 +533,10 @@ export function Header({
       {/* Main bar: logo, primary nav, contextual CTA. */}
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-cozy px-comfortable py-snug">
         <a href={resolveHref("/")} aria-label="Meridian Freight" className="shrink-0 text-foreground">
-          <span className="block sm:hidden">
+          <span className="block lg:hidden">
             <Logo variant="compact" className="h-[0.9rem] w-auto" />
           </span>
-          <span className="hidden sm:block">
+          <span className="hidden lg:block">
             <Logo variant="header" className="h-[0.9rem] w-auto" />
           </span>
         </a>
