@@ -10,6 +10,7 @@ import { Logo } from "./Logo";
 import type { NavLink, PrimaryNavItem } from "./nav-data";
 import {
   DEFAULT_PRIMARY_ACTION,
+  HOME_PRIMARY_ACTION,
   PORTAL_LINK,
   PRIMARY_NAV,
   resolveContextualCta,
@@ -509,6 +510,16 @@ export function Header({
   // route string or conditional living in this component.
   const canonicalPath = stripLocalePrefix(pathname, locale);
   const resolvedPrimaryAction = resolveContextualCta(canonicalPath) ?? primaryAction;
+  // Below md the CTA shares a line with three icon buttons, and a
+  // contextual label ("Talk to a Warehousing, Fulfilment and Distribution
+  // specialist") is wider than a phone, pushing the menu button off-screen.
+  // Any specialist CTA therefore shows the short label there; the full
+  // contextual label returns from md, the same breakpoint swap the logo
+  // uses. Other CTAs (Track shipment) are already short and never change.
+  const compactCtaLabel =
+    resolvedPrimaryAction.href === HOME_PRIMARY_ACTION.href
+      ? HOME_PRIMARY_ACTION.label
+      : resolvedPrimaryAction.label;
 
   return (
     <header className={cx("relative z-10 border-b border-border bg-surface", className)}>
@@ -581,7 +592,8 @@ export function Header({
             href={resolveHref(resolvedPrimaryAction.href)}
             className={buttonClassName("primary", "sm", touchTarget)}
           >
-            {resolvedPrimaryAction.label}
+            <span className="md:hidden">{compactCtaLabel}</span>
+            <span className="hidden md:inline">{resolvedPrimaryAction.label}</span>
           </a>
 
           <button
