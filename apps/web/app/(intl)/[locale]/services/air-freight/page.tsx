@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function AirFreightPage() {
   const locale = await getLocale();
+  const cta = contentCta("air-freight");
 
   const content: ServiceIndustryContent = {
     name: "Air freight",
@@ -84,7 +85,7 @@ export default async function AirFreightPage() {
     ctaHeading: "Need to move cargo fast?",
     ctaDescription:
       "Talk to an air freight specialist about your timeline. Our team will review your deadline and recommend the right service level.",
-    primaryCta: { label: "Talk to an Air Freight specialist", href: localePath(locale, "/contact") },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 

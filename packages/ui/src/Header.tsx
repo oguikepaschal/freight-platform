@@ -523,9 +523,11 @@ export function Header({
   // So any specialist CTA shows the short label below 1060px (1,036px plus
   // a 15px classic scrollbar, rounded up) and the full contextual label
   // from there. ServiceIndustryTemplate's closing CTA uses the same cutoff.
-  // Other CTAs (Track shipment) are already short and never change.
+  // Other CTAs (Track shipment) are already short and never change. The
+  // check compares the path only: a service/industry CTA targets
+  // `/contact?service=<slug>`, which must still count as a specialist CTA.
   const compactCtaLabel =
-    resolvedPrimaryAction.href === HOME_PRIMARY_ACTION.href
+    resolvedPrimaryAction.href.split("?")[0] === HOME_PRIMARY_ACTION.href
       ? HOME_PRIMARY_ACTION.label
       : resolvedPrimaryAction.label;
 

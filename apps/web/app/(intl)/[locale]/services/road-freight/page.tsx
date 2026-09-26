@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function RoadFreightPage() {
   const locale = await getLocale();
+  const cta = contentCta("road-freight");
 
   const content: ServiceIndustryContent = {
     name: "Road freight",
@@ -83,7 +84,7 @@ export default async function RoadFreightPage() {
     ctaHeading: "Ready to move your next shipment by road?",
     ctaDescription:
       "Talk to a road freight specialist about your route and volume. Our team will recommend the right truckload option and plan your delivery.",
-    primaryCta: { label: "Talk to a Road Freight specialist", href: localePath(locale, "/contact") },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 
