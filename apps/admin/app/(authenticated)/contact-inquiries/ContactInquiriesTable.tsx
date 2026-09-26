@@ -6,6 +6,7 @@ import type { Column } from "@freight/ui";
 import type { ContactInquiry } from "@freight/database";
 
 import { formatDate } from "@/lib/shipment-labels";
+import { serviceLabel } from "./inquiry-labels";
 
 // Table's render/rowKey props are functions, which can't cross the
 // server/client boundary as serialized props — so the column config lives
@@ -37,6 +38,11 @@ const columns: Column<ContactInquiry>[] = [
     key: "company",
     header: "Company",
     render: (row) => row.company ?? "—",
+  },
+  {
+    key: "service",
+    header: "Service",
+    render: (row) => serviceLabel(row.serviceSlug) ?? "—",
   },
   {
     key: "createdAt",

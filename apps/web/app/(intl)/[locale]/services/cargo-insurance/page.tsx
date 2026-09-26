@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function CargoInsurancePage() {
   const locale = await getLocale();
+  const cta = contentCta("cargo-insurance");
 
   const content: ServiceIndustryContent = {
     name: "Cargo insurance",
@@ -83,7 +84,7 @@ export default async function CargoInsurancePage() {
     ctaHeading: "Protect your next shipment",
     ctaDescription:
       "Talk to a cargo insurance specialist about coverage tailored to your shipment's value and route. Our team will walk you through the options.",
-    primaryCta: { label: "Talk to a Cargo Insurance specialist", href: localePath(locale, "/contact") },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 

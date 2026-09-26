@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function CustomsClearancePage() {
   const locale = await getLocale();
+  const cta = contentCta("customs-clearance");
 
   const content: ServiceIndustryContent = {
     name: "Customs clearance",
@@ -83,7 +84,7 @@ export default async function CustomsClearancePage() {
     ctaHeading: "Ready to move your next shipment through customs?",
     ctaDescription:
       "Talk to a customs clearance specialist about your shipment's documentation. Our team will review what's needed and help you prepare it.",
-    primaryCta: { label: "Talk to a Customs Clearance specialist", href: localePath(locale, "/contact") },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 

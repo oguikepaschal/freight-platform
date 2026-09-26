@@ -1,6 +1,10 @@
+import { sql } from "drizzle-orm";
 import {
+  check,
+  date,
   index,
   integer,
+  numeric,
   pgTable,
   primaryKey,
   serial,
@@ -11,6 +15,7 @@ import {
 import { randomUUID } from "node:crypto";
 
 import { generateReferenceNumber } from "./ids";
+import type { ShipmentType } from "./shipment-types";
 
 export const healthCheck = pgTable("health_check", {
   id: serial("id").primaryKey(),
@@ -226,24 +231,58 @@ export type NewLocation = typeof locations.$inferInsert;
 
 // Public /contact submissions — no customerId/user linkage (same reasoning
 // as locations above): a visitor doesn't need an account to reach this
-// page. No topic/source column: CTA-context-passing (which page/service the
-// inquiry came from) is deferred scope, and nothing populates it yet.
-export const contactInquiries = pgTable("contact_inquiries", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  company: text("company"),
-  phone: text("phone"),
-  message: text("message").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  // null means unhandled — same convention as notifications.readAt. No
-  // staffId/handledBy column: nothing else in this schema attributes a
-  // write to a specific staff member yet (createShipment, logTrackingEvent
-  // don't either), so this doesn't introduce that precedent.
-  handledAt: timestamp("handled_at", { withTimezone: true }),
-});
+// page. One table holds two kinds of inquiry, told apart by whether a
+// service/industry slug is set: a general inquiry (no slug, message
+// required) and a shipment inquiry from a service or industry CTA (a slug
+// set, origin/destination/service required, message optional). The CHECK
+// below is the database-side statement of that rule; createContactInquiry
+// enforces the same rule with friendly messages before the insert.
+export const contactInquiries = pgTable(
+  "contact_inquiries",
+  {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    company: text("company"),
+    phone: text("phone"),
+    // Nullable since shipment inquiries don't require one; the CHECK below
+    // still requires it for general inquiries.
+    message: text("message"),
+    // Slugs from packages/ui/src/nav-data.ts's SERVICES / INDUSTRIES — plain
+    // text rather than a Postgres enum for the same reason as
+    // locations.services: that list is UI-owned content that can grow
+    // without a schema migration.
+    serviceSlug: text("service_slug"),
+    industrySlug: text("industry_slug"),
+    shipmentType: text("shipment_type").$type<ShipmentType>(),
+    origin: text("origin"),
+    destination: text("destination"),
+    cargoDescription: text("cargo_description"),
+    totalWeightKg: numeric("total_weight_kg", { precision: 12, scale: 2 }),
+    packageCount: integer("package_count"),
+    // Free text as the visitor typed it (e.g. "120 x 80 x 100 cm") — package
+    // dimensions vary too much per shipment to split into fixed columns.
+    dimensions: text("dimensions"),
+    containerRequirements: text("container_requirements"),
+    specialHandling: text("special_handling"),
+    // A calendar date with no time or zone, unlike every timestamp here.
+    preferredShippingDate: date("preferred_shipping_date"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    // null means unhandled — same convention as notifications.readAt. No
+    // staffId/handledBy column: nothing else in this schema attributes a
+    // write to a specific staff member yet (createShipment, logTrackingEvent
+    // don't either), so this doesn't introduce that precedent.
+    handledAt: timestamp("handled_at", { withTimezone: true }),
+  },
+  (table) => [
+    check(
+      "contact_inquiries_mode_check",
+      sql`(${table.serviceSlug} IS NULL AND ${table.industrySlug} IS NULL AND ${table.message} IS NOT NULL) OR (${table.origin} IS NOT NULL AND ${table.destination} IS NOT NULL AND ${table.serviceSlug} IS NOT NULL)`,
+    ),
+  ],
+);
 
 export type ContactInquiry = typeof contactInquiries.$inferSelect;
 export type NewContactInquiry = typeof contactInquiries.$inferInsert;

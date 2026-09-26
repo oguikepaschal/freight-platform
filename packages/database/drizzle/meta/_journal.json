@@ -71,6 +71,13 @@
       "when": 1788546050784,
       "tag": "0009_jazzy_carmella_unuscione",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790436086421,
+      "tag": "0010_slimy_frank_castle",
+      "breakpoints": true
     }
   ]
 }

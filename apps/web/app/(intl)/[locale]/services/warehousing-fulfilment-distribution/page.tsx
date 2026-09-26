@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function WarehousingFulfilmentDistributionPage() {
   const locale = await getLocale();
+  const cta = contentCta("warehousing-fulfilment-distribution");
 
   const content: ServiceIndustryContent = {
     name: "Warehousing, fulfilment and distribution",
@@ -83,10 +84,7 @@ export default async function WarehousingFulfilmentDistributionPage() {
     ctaHeading: "Ready to scale your warehousing and fulfilment?",
     ctaDescription:
       "Talk to a warehousing and fulfilment specialist about your storage and order volume. Our team will recommend the right facility footprint and fulfilment setup.",
-    primaryCta: {
-      label: "Talk to a Warehousing, Fulfilment and Distribution specialist",
-      href: localePath(locale, "/contact"),
-    },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 

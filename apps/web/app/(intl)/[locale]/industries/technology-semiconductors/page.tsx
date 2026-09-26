@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function TechnologySemiconductorsPage() {
   const locale = await getLocale();
+  const cta = contentCta("technology-semiconductors");
 
   const content: ServiceIndustryContent = {
     name: "Technology and semiconductors",
@@ -83,7 +84,7 @@ export default async function TechnologySemiconductorsPage() {
     ctaHeading: "Ready to move your next technology shipment?",
     ctaDescription:
       "Talk to a specialist who understands the handling and timing that high-value tech and semiconductor cargo requires.",
-    primaryCta: { label: "Talk to a Technology and Semiconductors specialist", href: localePath(locale, "/contact") },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 

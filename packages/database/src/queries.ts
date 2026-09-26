@@ -840,23 +840,53 @@ export interface CreateContactInquiryInput {
   email: string;
   company?: string | null;
   phone?: string | null;
-  message: string;
+  // Required for a general inquiry, optional for a shipment inquiry.
+  message?: string | null;
+  // A service or industry slug makes this a shipment inquiry. The caller is
+  // responsible for checking slugs against the nav-data lists — this package
+  // doesn't depend on @freight/ui.
+  serviceSlug?: string | null;
+  industrySlug?: string | null;
+  shipmentType?: ContactInquiry["shipmentType"];
+  origin?: string | null;
+  destination?: string | null;
+  cargoDescription?: string | null;
+  totalWeightKg?: number | null;
+  packageCount?: number | null;
+  dimensions?: string | null;
+  containerRequirements?: string | null;
+  specialHandling?: string | null;
+  /** ISO calendar date, `YYYY-MM-DD`. */
+  preferredShippingDate?: string | null;
+}
+
+function trimmedOrNull(value: string | null | undefined): string | null {
+  return value?.trim() || null;
 }
 
 /**
  * Inserts a public /contact submission. Unlike every other write in this
  * file, there's no auth check to lean on here — the contact form is
  * unauthenticated and reachable by anything that can POST to it, not just
- * this app's own UI — so name/email/message are validated server-side
- * before the insert rather than trusting that the form's client-side
- * validation ran. Throws a plain, user-presentable Error on invalid input;
- * the calling server action is responsible for turning that into the
- * form's error state.
+ * this app's own UI — so required fields are validated server-side before
+ * the insert rather than trusting that the form's client-side validation
+ * ran. Throws a plain, user-presentable Error on invalid input; the calling
+ * server action is responsible for turning that into the form's error state.
+ *
+ * The rule below is the same one contact_inquiries_mode_check states in the
+ * schema. A service or industry slug makes the inquiry a shipment inquiry:
+ * it then needs origin, destination and a preferred service (message is
+ * optional). With neither slug it is a general inquiry and needs a message.
+ * Name and email are required either way.
  */
 export async function createContactInquiry(input: CreateContactInquiryInput): Promise<void> {
   const name = input.name.trim();
   const email = input.email.trim();
-  const message = input.message.trim();
+  const message = trimmedOrNull(input.message);
+  const serviceSlug = trimmedOrNull(input.serviceSlug);
+  const industrySlug = trimmedOrNull(input.industrySlug);
+  const origin = trimmedOrNull(input.origin);
+  const destination = trimmedOrNull(input.destination);
 
   if (!name) {
     throw new Error("Name is required.");
@@ -864,7 +894,18 @@ export async function createContactInquiry(input: CreateContactInquiryInput): Pr
   if (!email || !EMAIL_PATTERN.test(email)) {
     throw new Error("A valid email address is required.");
   }
-  if (!message) {
+
+  if (serviceSlug || industrySlug) {
+    if (!origin) {
+      throw new Error("Origin is required.");
+    }
+    if (!destination) {
+      throw new Error("Destination is required.");
+    }
+    if (!serviceSlug) {
+      throw new Error("Preferred service is required.");
+    }
+  } else if (!message) {
     throw new Error("Message is required.");
   }
 
@@ -873,9 +914,22 @@ export async function createContactInquiry(input: CreateContactInquiryInput): Pr
   await db.insert(schema.contactInquiries).values({
     name,
     email,
-    company: input.company?.trim() || null,
-    phone: input.phone?.trim() || null,
+    company: trimmedOrNull(input.company),
+    phone: trimmedOrNull(input.phone),
     message,
+    serviceSlug,
+    industrySlug,
+    shipmentType: input.shipmentType ?? null,
+    origin,
+    destination,
+    cargoDescription: trimmedOrNull(input.cargoDescription),
+    // numeric columns are read and written as strings by the driver.
+    totalWeightKg: input.totalWeightKg == null ? null : String(input.totalWeightKg),
+    packageCount: input.packageCount ?? null,
+    dimensions: trimmedOrNull(input.dimensions),
+    containerRequirements: trimmedOrNull(input.containerRequirements),
+    specialHandling: trimmedOrNull(input.specialHandling),
+    preferredShippingDate: trimmedOrNull(input.preferredShippingDate),
   });
 }
 

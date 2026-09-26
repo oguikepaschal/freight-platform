@@ -78,6 +78,7 @@ export {
   SERVICES,
   INDUSTRIES,
   contentImage,
+  contentCta,
   PRIMARY_NAV,
   UTILITY_LINKS,
   PORTAL_LINK,

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function SeaFreightPage() {
   const locale = await getLocale();
+  const cta = contentCta("sea-freight");
 
   const content: ServiceIndustryContent = {
     name: "Sea freight",
@@ -86,7 +87,7 @@ export default async function SeaFreightPage() {
     ctaHeading: "Ready to ship?",
     ctaDescription:
       "Talk to a sea freight specialist about your shipment. Our team will review your needs and recommend the right routing and container option.",
-    primaryCta: { label: "Talk to a Sea Freight specialist", href: localePath(locale, "/contact") },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 

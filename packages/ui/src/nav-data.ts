@@ -40,9 +40,11 @@ export interface ContentNavLink extends NavLink {
   ctaLabel?: string;
   /**
    * Href for the contextual CTA above. Absent means the CTA falls back to
-   * `DEFAULT_PRIMARY_ACTION.href` (the common case: most services/industries
-   * just want a differently-worded specialist CTA, not a different
-   * destination).
+   * `DEFAULT_PRIMARY_ACTION.href`. Every SERVICES/INDUSTRIES entry sets it to
+   * `/contact` with its own slug as the query (`?service=<slug>` or
+   * `?industry=<slug>`), so the contact page opens in shipment mode. The
+   * detail pages' closing CTAs are built from this same entry, so this is
+   * the one place that decides where a service/industry CTA lands.
    */
   ctaHref?: string;
   /**
@@ -68,7 +70,7 @@ export const SERVICES: ContentNavLink[] = [
     image: "/images/services/sea-freight.jpeg",
     shortDescription: "Full container and consolidated ocean freight across major global trade lanes.",
     ctaLabel: "Talk to a Sea Freight specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?service=sea-freight",
   },
   {
     slug: "air-freight",
@@ -77,7 +79,7 @@ export const SERVICES: ContentNavLink[] = [
     image: "/images/services/air-freight.jpeg",
     shortDescription: "Time-critical air cargo with express, standard, and charter options worldwide.",
     ctaLabel: "Talk to an Air Freight specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?service=air-freight",
   },
   {
     slug: "road-freight",
@@ -86,7 +88,7 @@ export const SERVICES: ContentNavLink[] = [
     image: "/images/services/road-freight.jpeg",
     shortDescription: "Full-truckload, part-load, and cross-border road transport across regions.",
     ctaLabel: "Talk to a Road Freight specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?service=road-freight",
   },
   {
     slug: "warehousing-fulfilment-distribution",
@@ -95,7 +97,7 @@ export const SERVICES: ContentNavLink[] = [
     image: "/images/services/warehousing-fulfilment-distribution.jpeg",
     shortDescription: "Storage, pick-and-pack, and last-mile distribution from a global facility network.",
     ctaLabel: "Talk to a Warehousing, Fulfilment and Distribution specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?service=warehousing-fulfilment-distribution",
   },
   {
     slug: "customs-clearance",
@@ -104,7 +106,7 @@ export const SERVICES: ContentNavLink[] = [
     image: "/images/services/customs-clearance.jpeg",
     shortDescription: "Import and export clearance handled by specialists who know local regulations.",
     ctaLabel: "Talk to a Customs Clearance specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?service=customs-clearance",
   },
   {
     slug: "cargo-insurance",
@@ -113,7 +115,7 @@ export const SERVICES: ContentNavLink[] = [
     image: "/images/services/cargo-insurance.jpeg",
     shortDescription: "Protect shipments in transit with coverage tailored to cargo value and risk.",
     ctaLabel: "Talk to a Cargo Insurance specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?service=cargo-insurance",
   },
 ];
 
@@ -125,7 +127,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     image: "/images/industries/automotive-mobility.jpeg",
     shortDescription: "Just-in-time and just-in-sequence logistics for automotive supply chains.",
     ctaLabel: "Talk to an Automotive and Mobility specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?industry=automotive-mobility",
     tags: ["JIT / JIS", "Milk-run inbound", "Returnable packaging"],
   },
   {
@@ -135,7 +137,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     image: "/images/industries/consumer-goods.jpeg",
     shortDescription: "Reliable, scalable logistics for fast-moving consumer goods brands.",
     ctaLabel: "Talk to a Consumer Goods specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?industry=consumer-goods",
     tags: ["Peak capacity", "Retail compliance", "Multi-channel"],
   },
   {
@@ -145,7 +147,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     image: "/images/industries/healthcare.jpeg",
     shortDescription: "Compliant, temperature-controlled logistics for pharma and medical devices.",
     ctaLabel: "Talk to a Healthcare specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?industry=healthcare",
     tags: ["GDP certified", "2–8 °C validated", "Excursion reporting"],
   },
   {
@@ -155,7 +157,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     image: "/images/industries/technology-semiconductors.jpeg",
     shortDescription: "Secure, time-critical logistics for high-value tech and semiconductor cargo.",
     ctaLabel: "Talk to a Technology and Semiconductors specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?industry=technology-semiconductors",
     tags: ["Chain of custody", "ESD handling", "Charter on demand"],
   },
   {
@@ -165,7 +167,7 @@ export const INDUSTRIES: ContentNavLink[] = [
     image: "/images/industries/industrial.jpeg",
     shortDescription: "Heavy machinery and industrial equipment logistics, door to door.",
     ctaLabel: "Talk to an Industrial specialist",
-    ctaHref: "/contact",
+    ctaHref: "/contact?industry=industrial",
     tags: ["Out-of-gauge", "Breakbulk", "Lift planning"],
   },
 ];
@@ -210,6 +212,24 @@ export function contentImage(slug: string): string | undefined {
   const entry = [...SERVICES, ...INDUSTRIES].find((item) => item.slug === slug);
   if (!entry) throw new Error(`contentImage: no SERVICES/INDUSTRIES entry with slug "${slug}"`);
   return entry.image;
+}
+
+/**
+ * Closing-CTA label and href for a SERVICES/INDUSTRIES entry, so a detail
+ * page builds its primary CTA from the same nav-data entry Header reads
+ * instead of repeating a label and href of its own. The href is canonical
+ * and unprefixed (`/contact?service=<slug>`) — the caller passes it through
+ * `localePath`, like every other internal link. An unknown slug, or an entry
+ * with no `ctaLabel`/`ctaHref`, throws: it can only be a typo, and a throw at
+ * render fails the static build (same as `contentImage`).
+ */
+export function contentCta(slug: string): NavLink {
+  const entry = [...SERVICES, ...INDUSTRIES].find((item) => item.slug === slug);
+  if (!entry) throw new Error(`contentCta: no SERVICES/INDUSTRIES entry with slug "${slug}"`);
+  if (!entry.ctaLabel || !entry.ctaHref) {
+    throw new Error(`contentCta: "${slug}" has no ctaLabel/ctaHref`);
+  }
+  return { label: entry.ctaLabel, href: entry.ctaHref };
 }
 
 /** Site-wide fallback when a page doesn't specify its own contextual CTA. */

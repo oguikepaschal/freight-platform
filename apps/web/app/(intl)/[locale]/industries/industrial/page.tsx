@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceIndustryTemplate, contentImage, type ServiceIndustryContent } from "@freight/ui";
+import { ServiceIndustryTemplate, contentCta, contentImage, type ServiceIndustryContent } from "@freight/ui";
 import { localePath } from "@/lib/locale/config";
 import { getLocale } from "@/lib/locale/server";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function IndustrialPage() {
   const locale = await getLocale();
+  const cta = contentCta("industrial");
 
   const content: ServiceIndustryContent = {
     name: "Industrial",
@@ -83,7 +84,7 @@ export default async function IndustrialPage() {
     ctaHeading: "Ready to move your next piece of industrial equipment?",
     ctaDescription:
       "Talk to a specialist who understands the handling and coordination heavy industrial equipment requires.",
-    primaryCta: { label: "Talk to an Industrial specialist", href: localePath(locale, "/contact") },
+    primaryCta: { label: cta.label, href: localePath(locale, cta.href) },
     secondaryCta: { label: "Track shipment", href: localePath(locale, "/track") },
   };
 
