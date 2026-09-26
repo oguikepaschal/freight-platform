@@ -446,7 +446,7 @@ function MobileMenu({
 
       <div className="mt-auto flex flex-col gap-tight border-t border-border px-comfortable py-comfortable">
         {/* Track shipment normally lives on the bar's track icon, so the
-            menu skips it; below 380px that icon is hidden, and the menu
+            menu skips it; below 400px that icon is hidden, and the menu
             lists it instead. */}
         {UTILITY_LINKS.map((link) => (
           <a
@@ -454,7 +454,7 @@ function MobileMenu({
             href={resolveHref(link.href)}
             className={cx(
               "rounded-sm py-tight font-sans text-sm text-muted",
-              link.label === "Track shipment" && "min-[380px]:hidden",
+              link.label === "Track shipment" && "min-[400px]:hidden",
             )}
           >
             {link.label}
@@ -516,12 +516,14 @@ export function Header({
   // route string or conditional living in this component.
   const canonicalPath = stripLocalePrefix(pathname, locale);
   const resolvedPrimaryAction = resolveContextualCta(canonicalPath) ?? primaryAction;
-  // Below md the CTA shares a line with three icon buttons, and a
-  // contextual label ("Talk to a Warehousing, Fulfilment and Distribution
-  // specialist") is wider than a phone, pushing the menu button off-screen.
-  // Any specialist CTA therefore shows the short label there; the full
-  // contextual label returns from md, the same breakpoint swap the logo
-  // uses. Other CTAs (Track shipment) are already short and never change.
+  // A contextual label ("Talk to a Warehousing, Fulfilment and Distribution
+  // specialist", 361px) doesn't fit the single-line bar until the bar is
+  // wide: below md it pushed the menu button off-screen, and from lg the
+  // header lockup plus the nav leaves room for it only from about 1,036px.
+  // So any specialist CTA shows the short label below 1060px (1,036px plus
+  // a 15px classic scrollbar, rounded up) and the full contextual label
+  // from there. ServiceIndustryTemplate's closing CTA uses the same cutoff.
+  // Other CTAs (Track shipment) are already short and never change.
   const compactCtaLabel =
     resolvedPrimaryAction.href === HOME_PRIMARY_ACTION.href
       ? HOME_PRIMARY_ACTION.label
@@ -585,14 +587,14 @@ export function Header({
 
         <div className="ml-auto flex items-center gap-tight md:ml-0">
           {/* Homepage hot paths (per Project_Overview.md): reachable without
-              opening the mobile menu, not just tucked inside it. Below 380px
+              opening the mobile menu, not just tucked inside it. Below 400px
               the track icon gives way so the bar stays on one line; tracking
               is still in the mobile menu there. */}
           {trackLink ? (
             <a
               href={resolveHref(trackLink.href)}
               aria-label={trackLink.label}
-              className="flex size-11 items-center justify-center rounded-sm text-muted transition-colors duration-base hover:text-foreground max-[379px]:hidden md:hidden"
+              className="flex size-11 items-center justify-center rounded-sm text-muted transition-colors duration-base hover:text-foreground max-[400px]:hidden md:hidden"
             >
               <IconTrack className="size-4" />
             </a>
@@ -605,8 +607,8 @@ export function Header({
             href={resolveHref(resolvedPrimaryAction.href)}
             className={buttonClassName("primary", "sm", touchTarget)}
           >
-            <span className="md:hidden">{compactCtaLabel}</span>
-            <span className="hidden md:inline">{resolvedPrimaryAction.label}</span>
+            <span className="min-[1060px]:hidden">{compactCtaLabel}</span>
+            <span className="hidden min-[1060px]:inline">{resolvedPrimaryAction.label}</span>
           </a>
 
           <button

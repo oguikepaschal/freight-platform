@@ -92,7 +92,17 @@ export function CompanyPageTemplate({ content }: CompanyPageTemplateProps) {
 
       {content.cta ? (
         <div>
-          <a href={content.cta.href} className={buttonClassName("primary", "md")}>
+          {/* Company CTAs are full sentences ("Contact us about an investment or
+              partnership", 324px), so below sm the button may wrap instead
+              of running past a narrow phone's column. */}
+          <a
+            href={content.cta.href}
+            className={buttonClassName(
+              "primary",
+              "md",
+              "max-sm:h-auto max-sm:min-h-10 max-sm:whitespace-normal max-sm:py-snug max-sm:text-center",
+            )}
+          >
             {content.cta.label}
           </a>
         </div>

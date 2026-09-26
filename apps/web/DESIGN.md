@@ -291,8 +291,9 @@ Pill (`full`) with 1px border at 30% of the state hue, `-soft` fill and matching
 ### Logo (signature)
 The mark is the word MERIDIAN in extended Archivo letterforms, converted to outlines, closed by one oxide dot that sits on the baseline. It is a token-only component (`Logo`, exported from `@freight/ui`) that draws SVG paths: the wordmark takes `currentColor` and the dot takes `fill-oxide`, so both follow the surrounding text color and the nearest `data-mode`. The dot is on-light oxide (`#a34a22`) in a light section and on-dark oxide (`#e08a5a`) inside a dark wrapper. The path data is generated from the exported SVGs and is never edited by hand.
 
-Three variants, sized only by a height class (the viewBox is tight, so width follows):
-- **Compact:** MERIDIAN and the dot. About 148px wide at 0.9rem tall. Used in the Header below `lg`, and in the shared AppShell of portal and admin at every width.
+Four variants, sized only by a height class (the viewBox is tight, so width follows):
+- **Mark:** the M alone, closed by the dot. About 27px wide at 0.9rem tall. It draws the same MERIDIAN path inside a nested SVG viewport that ends at the M's right edge, so the other letters are clipped, not re-drawn, and the dot keeps the compact variant's spacing (30.12 units after the last letter). Used in the Header below 500px.
+- **Compact:** MERIDIAN and the dot. About 148px wide at 0.9rem tall. Used in the Header from 500px to `lg`, and in the shared AppShell of portal and admin at every width.
 - **Header:** MERIDIAN and FREIGHT on one line, FREIGHT in a lighter, wider-set cut, with the dot closing the line. About 268px wide at 0.9rem tall. Used in the Header from `lg`, and in the Footer at 0.75rem tall.
 - **Primary:** a stacked lockup: MERIDIAN, a 2-unit rule at 55% opacity that carries the dot, then FREIGHT beneath. Exported as a file only; no page renders it yet.
 
@@ -305,9 +306,11 @@ Exported files carry literal hex copied from palette.css because a file cannot r
 **The Decorative-Mark Rule.** Keep every `Logo` `aria-hidden`, and give the link around it an accessible name (`aria-label="Meridian Freight"`). Where no link wraps it, as in the Footer, the adjacent text must name the company. Do not label the SVG itself, and do not ship a logo-only link with no name. Check: every `<Logo` sits inside an element with an `aria-label` or beside text naming the company.
 
 ### Navigation (Header)
-Surface-colored bar with a hairline bottom border. A utility bar (caption size, muted, from `md`) sits above a main bar with the logo (compact below `lg`, header lockup from `lg`, inside a home link named "Meridian Freight"), the primary nav (label size, hover to oxide, from `md`), dropdown panels (`lg` radius, `shadow-lg`), and one contextual primary CTA button (sm, with `touchTarget`). The CTA is resolved from the route by `resolveContextualCta`: "Talk to a specialist" on the homepage (`HOME_PRIMARY_ACTION`), each service or industry page's own specialist label, and "Track shipment" (`DEFAULT_PRIMARY_ACTION`) everywhere else. Below `md` the nav becomes a full-screen background-colored menu with a focus trap, and the icon-only track, search and menu buttons sit beside the CTA as 44px (`size-11`) boxes around 16-20px icons; the search toggle drops back to 32px in the `md`+ utility bar. A visually hidden "Skip to content" link is the first focusable element on every page; it appears top-left on focus (surface, `sm` radius, `shadow-lg`) and targets `<main id="main">`.
+Surface-colored bar with a hairline bottom border. A utility bar (caption size, muted, from `md`) sits above a main bar with the logo (the mark below 500px, compact from 500px to `lg`, header lockup from `lg`, all inside a home link named "Meridian Freight"), the primary nav (label size, hover to oxide, from `md`), dropdown panels (`lg` radius, `shadow-lg`), and one contextual primary CTA button (sm, with `touchTarget`). The CTA is resolved from the route by `resolveContextualCta`: "Talk to a specialist" on the homepage (`HOME_PRIMARY_ACTION`), each service or industry page's own specialist label, and "Track shipment" (`DEFAULT_PRIMARY_ACTION`) everywhere else. A specialist CTA shows the short label "Talk to a specialist" below 1060px and its full contextual label from 1060px: the longest label (Warehousing, 361px) needs about 1,036px of bar at `lg`, and 1060px adds a 15px classic scrollbar with a margin. Below `md` the nav becomes a full-screen background-colored menu with a focus trap, and the icon-only track, search and menu buttons sit beside the CTA as 44px (`size-11`) boxes around 16-20px icons; the search toggle drops back to 32px in the `md`+ utility bar. Below 400px the track icon is hidden and "Track shipment" appears in the mobile menu instead; from 400px the menu leaves it out because the icon is visible. A visually hidden "Skip to content" link is the first focusable element on every page; it appears top-left on focus (surface, `sm` radius, `shadow-lg`) and targets `<main id="main">`.
 
-The main bar wraps below `md` and never from `md` up. The logo is a fixed-width drawing and cannot wrap like text, so when it and the actions cluster no longer fit on one line (under about 447px) the logo keeps the first line and the actions cluster moves to a second line, right-aligned.
+The main bar is allowed to wrap below `md` and never wraps from `md` up, but with the mark and the short CTA label it stays on one line at every width from 375px: 375px leaves about 51px spare (track icon hidden), 400px about 25px, 499px about 125px, and 500px (compact logo) about 5px. If a wrap does happen, the logo keeps the first line and the actions cluster moves to a second line, right-aligned.
+
+**The Short-Label Rule.** A button whose label is built from a service or industry name is `whitespace-nowrap` (every `buttonClassName` button is), so it shows the short label "Talk to a specialist" below 1060px and the full label from 1060px. It is a CSS swap between two spans, never measurement or state. Check: every render of a `ctaLabel` or a detail page's `primaryCta.label` sits in a span hidden below `min-[1060px]`.
 
 ### Table
 Bordered `lg`-radius region, surface header with caption-size uppercase muted column labels, hairline row dividers, `hover:bg-border/10` rows. Data columns render in Plex Mono. Loading uses skeleton bars (`full` radius); edge fades hint at horizontal scroll.
@@ -341,9 +344,10 @@ A labelled row of placeholder logotypes in a two-column grid that becomes four c
 ### Detail page template (service and industry pages)
 A `max-w-6xl` column with `expansive` (64px) between four blocks.
 - **Hero:** two columns from `lg` (`gap-loose`). One side has a neutral Badge, an Archivo display headline (`text-4xl`) and a muted intro capped at `max-w-lg`. The other is a `lg`-radius bordered panel on the surface color, optionally topped by a full-bleed 16:9 image cropped to the panel's top corners, then a monogram tile (3rem, `md` radius, Plex Mono), the name in Archivo, a caption-size tagline and a hairline-separated checklist.
+- **Headline wrapping:** the hero `h1` takes `hyphens-auto` and `wrap-break-word`, so a single long word at `text-4xl` ("semiconductor" is wider than a 375px column) hyphenates, or breaks inside the word where no hyphenation dictionary is available, instead of running off the page. It relies on `html` carrying `lang`, which both the locale and tier 2 layouts set. The type scale and copy are unchanged.
 - **Value proposition:** a `lg`-radius bordered surface block (`p-comfortable`, `p-expansive` from `lg`) with a heading and a two-column grid of small Archivo titles over muted body text.
 - **Key benefits:** a grid of Cards (one column, two from `sm`, three from `lg`), each with a 2.5rem monogram tile.
-- **Closing block:** a `lg`-radius block on the background color with a 50% border, a heading, and a primary plus secondary button.
+- **Closing block:** a `lg`-radius block on the background color with a 50% border, a heading, and a primary plus secondary button. The primary button follows the Short-Label Rule: "Talk to a specialist" below 1060px, the page's full contextual label from 1060px.
 
 ### Imagery
 Photographs are decorative (empty alt text), cropped with `object-cover` inside a fixed frame, and served from `apps/web/public/images/` (`hero.jpg`, `services/`, `industries/`) as AVIF or WebP.
@@ -374,8 +378,9 @@ Photographs are decorative (empty alt text), cropped with `object-cover` inside 
 - **Do** transition with `ease-standard` over `duration-base` or `duration-fast`, and provide a reduced-motion path for every animation.
 - **Do** put `.reveal` only on blocks that start below the fold, and keep it off any ancestor of a sticky element.
 - **Do** number items only where the order is the information, like the quote steps; section labels and card lists stay unnumbered.
+- **Do** let a full-sentence button label wrap on phones rather than run past the column: the company-page CTA drops `whitespace-nowrap` and its fixed height below `sm`.
 - **Do** give every touch control a 44px hit area: `size-11` for icon buttons, `touchTarget` for button-styled links, an `::after` inset for small text links.
-- **Do** render the brand through the `Logo` component (compact below `lg` in the Header, header lockup from `lg` and in the Footer), and give the link around it the accessible name.
+- **Do** render the brand through the `Logo` component (mark below 500px, compact from 500px to `lg`, header lockup from `lg` and in the Footer), and give the link around it the accessible name.
 
 ### Don't:
 - **Don't** write a hex or rgba value outside palette.css, or use a Tailwind default color.

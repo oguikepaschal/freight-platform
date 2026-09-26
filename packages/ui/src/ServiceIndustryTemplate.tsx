@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Badge } from "./Badge";
 import { buttonClassName } from "./Button";
 import { Card } from "./Card";
+import { HOME_PRIMARY_ACTION } from "./nav-data";
 
 /**
  * Content for a service/industry detail page (Sea Freight, Healthcare, and
@@ -61,7 +62,12 @@ export function ServiceIndustryTemplate({ content }: ServiceIndustryTemplateProp
       <section className="grid grid-cols-1 items-center gap-loose lg:grid-cols-2">
         <div className="flex flex-col gap-cozy">
           <Badge variant="neutral">{content.name}</Badge>
-          <h1 className="font-display text-4xl font-semibold text-foreground">{content.headline}</h1>
+          {/* A single long word ("semiconductor") at text-4xl is wider than a
+              phone column, so the headline may hyphenate (html carries lang
+              on every route) and, failing that, break inside the word. */}
+          <h1 className="font-display text-4xl font-semibold text-foreground hyphens-auto wrap-break-word">
+            {content.headline}
+          </h1>
           <p className="max-w-lg text-base text-muted">{content.intro}</p>
         </div>
 
@@ -145,8 +151,13 @@ export function ServiceIndustryTemplate({ content }: ServiceIndustryTemplateProp
           <p className="max-w-lg text-base text-muted">{content.ctaDescription}</p>
         </div>
         <div className="flex flex-wrap gap-cozy pt-tight">
+          {/* Every detail page's primary CTA is a specialist CTA, so below
+              1060px it takes the short label, matching Header's cutoff; a
+              no-wrap button with the full contextual label is wider than a
+              phone. */}
           <a href={content.primaryCta.href} className={buttonClassName("primary", "md")}>
-            {content.primaryCta.label}
+            <span className="min-[1060px]:hidden">{HOME_PRIMARY_ACTION.label}</span>
+            <span className="hidden min-[1060px]:inline">{content.primaryCta.label}</span>
           </a>
           <a href={content.secondaryCta.href} className={buttonClassName("secondary", "md")}>
             {content.secondaryCta.label}
