@@ -19,3 +19,20 @@ write the result back. Don't touch any other content in the description.
 Verify: after creating this file, open a trivial test PR (or use the
 next real one) and confirm its body has none of the above after your
 cleanup step runs.
+
+## Database
+
+- Neon has two branches: `main` is production; `dev` is shared by local
+  development and all Vercel Preview and Development environments, in all
+  three apps (web, portal, admin).
+- Per-preview Neon branching is disabled on purpose. Do not re-enable it.
+- Local env files must always point at `dev`. Never point local development,
+  tests or seed scripts at production.
+- The packages/database test suite writes to whatever DATABASE_URL resolves
+  to, so run it only against `dev`.
+- Previews share `dev`, so only one PR carrying a migration may be open at a
+  time.
+- Generate migrations with drizzle-kit and apply them to `dev` for testing.
+  The owner runs production migrations manually before merge. Claude Code
+  never runs a migration against production.
+- Migrations use DATABASE_URL_UNPOOLED; the runtime uses DATABASE_URL (pooled).
