@@ -170,6 +170,24 @@ export const INDUSTRIES: ContentNavLink[] = [
     ctaHref: "/contact?industry=industrial",
     tags: ["Out-of-gauge", "Breakbulk", "Lift planning"],
   },
+  {
+    slug: "aerospace",
+    label: "Aerospace",
+    href: "/industries/aerospace",
+    shortDescription: "AOG response and secure logistics for aircraft parts, tooling and MRO supply.",
+    ctaLabel: "Talk to an Aerospace specialist",
+    ctaHref: "/contact?industry=aerospace",
+    tags: ["AOG response", "Dangerous goods", "Oversized parts"],
+  },
+  {
+    slug: "perishables",
+    label: "Perishables",
+    href: "/industries/perishables",
+    shortDescription: "Temperature-controlled logistics for fresh food, produce and flowers.",
+    ctaLabel: "Talk to a Perishables specialist",
+    ctaHref: "/contact?industry=perishables",
+    tags: ["Cold chain", "Fresh produce", "Time-critical"],
+  },
 ];
 
 /**
