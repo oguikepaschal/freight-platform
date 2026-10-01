@@ -270,11 +270,15 @@ export const contactInquiries = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
-    // null means unhandled — same convention as notifications.readAt. No
-    // staffId/handledBy column: nothing else in this schema attributes a
-    // write to a specific staff member yet (createShipment, logTrackingEvent
-    // don't either), so this doesn't introduce that precedent.
+    // null means unhandled — same convention as notifications.readAt. There
+    // is still no handledBy column: assignedTo/assignedAt below are the one
+    // staff-attributed write in this schema (createShipment, logTrackingEvent
+    // and markContactInquiryHandled still record no staff identity).
     handledAt: timestamp("handled_at", { withTimezone: true }),
+    // Who an inquiry is assigned to. set null so deleting a staff row
+    // leaves the inquiry unassigned rather than blocking the delete.
+    assignedTo: text("assigned_to").references(() => staff.id, { onDelete: "set null" }),
+    assignedAt: timestamp("assigned_at", { withTimezone: true }),
   },
   (table) => [
     check(

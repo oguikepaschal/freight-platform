@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { markContactInquiryHandled } from "@freight/database";
+import { assignContactInquiry, markContactInquiryHandled } from "@freight/database";
 
 import { auth } from "@/auth";
 
@@ -15,6 +15,18 @@ export async function markContactInquiryHandledAction(inquiryId: number): Promis
   }
 
   await markContactInquiryHandled(inquiryId);
+
+  revalidatePath("/contact-inquiries");
+  revalidatePath(`/contact-inquiries/${inquiryId}`);
+}
+
+export async function assignToMeAction(inquiryId: number): Promise<void> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  await assignContactInquiry(inquiryId, session.user.id);
 
   revalidatePath("/contact-inquiries");
   revalidatePath(`/contact-inquiries/${inquiryId}`);

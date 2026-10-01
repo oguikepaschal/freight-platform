@@ -1,13 +1,16 @@
 export { getDb } from "./client";
 export {
+  assignContactInquiry,
   createContactInquiry,
   createShipment,
   createTrackingEvent,
   getContactInquiryById,
+  getInquiryStatus,
   getCustomerById,
   getShipmentForCustomer,
   getShipmentIdByReference,
   getShipmentWithEvents,
+  INQUIRY_SLA_HOURS,
   isDocumentAccessibleToCustomer,
   listContactInquiries,
   listCustomersWithShipmentCounts,
@@ -25,12 +28,14 @@ export {
   searchLocationsByText,
 } from "./queries";
 export type {
+  ContactInquiryWithAssignee,
   CreateContactInquiryInput,
   CreateShipmentInput,
   CreateTrackingEventInput,
   CustomerSummary,
   CustomerWithShipmentCount,
   DocumentSummary,
+  InquiryStatus,
   LocationSummary,
   NotificationSummary,
   SearchLocationsFilters,

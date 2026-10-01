@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Badge, Table } from "@freight/ui";
 import type { Column } from "@freight/ui";
-import type { ContactInquiry } from "@freight/database";
+import type { ContactInquiryWithAssignee, InquiryStatus } from "@freight/database";
 
 import { formatDate } from "@/lib/shipment-labels";
 import { serviceLabel } from "./inquiry-labels";
@@ -11,7 +11,14 @@ import { serviceLabel } from "./inquiry-labels";
 // Table's render/rowKey props are functions, which can't cross the
 // server/client boundary as serialized props — so the column config lives
 // here, inside the client component, rather than in the server page above.
-const columns: Column<ContactInquiry>[] = [
+// Status and age are computed once in the server page (one shared `now`) so
+// this client component never reads the clock and can't hydrate differently.
+export type InquiryRow = ContactInquiryWithAssignee & {
+  status: InquiryStatus;
+  ageLabel: string;
+};
+
+const columns: Column<InquiryRow>[] = [
   {
     key: "name",
     header: "Name",
@@ -51,15 +58,31 @@ const columns: Column<ContactInquiry>[] = [
     render: (row) => formatDate(row.createdAt),
   },
   {
+    key: "owner",
+    header: "Owner",
+    render: (row) => row.assigneeName ?? row.assigneeEmail ?? "Unassigned",
+  },
+  {
+    key: "age",
+    header: "Age",
+    type: "data",
+    render: (row) => row.ageLabel,
+  },
+  {
     key: "status",
     header: "Status",
-    // "New" badge for unhandled rows — same variant NotificationsList.tsx
-    // uses for its unread badge, not a new one invented for this table.
-    render: (row) => (row.handledAt === null ? <Badge variant="in-transit">New</Badge> : null),
+    // "New" uses the variant NotificationsList.tsx uses for its unread
+    // badge. The Badge union has no warning variant; "neutral" is what
+    // STATUS_BADGE_VARIANTS already uses for the shipment "delayed" state.
+    render: (row) => {
+      if (row.status === "overdue") return <Badge variant="neutral">Overdue</Badge>;
+      if (row.status === "new") return <Badge variant="in-transit">New</Badge>;
+      return null;
+    },
   },
 ];
 
-export function ContactInquiriesTable({ inquiries }: { inquiries: ContactInquiry[] }) {
+export function ContactInquiriesTable({ inquiries }: { inquiries: InquiryRow[] }) {
   return (
     <Table
       columns={columns}

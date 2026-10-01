@@ -2,10 +2,12 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Badge, Card } from "@freight/ui";
-import { getContactInquiryById } from "@freight/database";
+import { getContactInquiryById, getInquiryStatus } from "@freight/database";
 
+import { auth } from "@/auth";
 import { formatDate } from "@/lib/shipment-labels";
 import { industryLabel, serviceLabel, SHIPMENT_TYPE_LABELS } from "../inquiry-labels";
+import { AssignToMeButton } from "./AssignToMeButton";
 import { MarkHandledButton } from "./MarkHandledButton";
 
 export const metadata: Metadata = {
@@ -36,7 +38,10 @@ export default async function ContactInquiryDetailPage({
     notFound();
   }
 
-  const unhandled = inquiry.handledAt === null;
+  const session = await auth();
+  const status = getInquiryStatus(inquiry, new Date());
+  const unhandled = status !== "handled";
+  const assignedToMe = inquiry.assignedTo !== null && inquiry.assignedTo === session?.user?.id;
   // A service or industry slug is what makes an inquiry a shipment inquiry
   // (see contact_inquiries_mode_check); general inquiries have none of these
   // fields, so the block would only be a wall of dashes.
@@ -52,7 +57,8 @@ export default async function ContactInquiryDetailPage({
         <div className="flex flex-col gap-cozy">
           <div className="flex items-center justify-between gap-cozy">
             <h2 className="font-display text-lg font-semibold text-foreground">{inquiry.name}</h2>
-            {unhandled ? <Badge variant="in-transit">New</Badge> : null}
+            {status === "overdue" ? <Badge variant="neutral">Overdue</Badge> : null}
+            {status === "new" ? <Badge variant="in-transit">New</Badge> : null}
           </div>
 
           <dl className="grid grid-cols-1 gap-cozy sm:grid-cols-2">
@@ -71,6 +77,12 @@ export default async function ContactInquiryDetailPage({
             <div className="flex flex-col gap-tight">
               <dt className="font-sans text-xs uppercase tracking-wide text-muted">Submitted</dt>
               <dd className="text-sm text-foreground">{formatDate(inquiry.createdAt)}</dd>
+            </div>
+            <div className="flex flex-col gap-tight">
+              <dt className="font-sans text-xs uppercase tracking-wide text-muted">Owner</dt>
+              <dd className="text-sm text-foreground">
+                {inquiry.assigneeName ?? inquiry.assigneeEmail ?? "Unassigned"}
+              </dd>
             </div>
             {inquiry.handledAt ? (
               <div className="flex flex-col gap-tight">
@@ -120,7 +132,8 @@ export default async function ContactInquiryDetailPage({
           </div>
 
           {unhandled ? (
-            <div>
+            <div className="flex gap-cozy">
+              {assignedToMe ? null : <AssignToMeButton inquiryId={inquiry.id} />}
               <MarkHandledButton inquiryId={inquiry.id} />
             </div>
           ) : null}
