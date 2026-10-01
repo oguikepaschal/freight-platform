@@ -203,31 +203,23 @@ export default async function Page() {
             </a>
           </div>
 
-          {/* Five industries: the first card spans two columns, so the grid
-              fills evenly at both two columns (2 + 2 + 2) and three (3 + 3)
-              instead of leaving one card alone on the last row. Its image
-              crop widens to 4:1 to keep the row's image heights equal. */}
+          {/* Six cards fill the grid evenly at two columns (2 + 2 + 2) and
+              three (3 + 3). The full list lives on /industries (link above). */}
           <div className="grid grid-cols-1 gap-cozy sm:grid-cols-2 lg:grid-cols-3">
-            {INDUSTRIES.map((industry, index) => (
+            {INDUSTRIES.slice(0, 6).map((industry) => (
               <a
                 key={industry.slug}
                 href={resolveHref(industry.href)}
-                className={`reveal block h-full ${index === 0 ? "sm:col-span-2" : ""}`}
+                className="reveal block h-full"
               >
                 <div className="flex h-full flex-col gap-cozy rounded-lg border border-border bg-surface p-comfortable transition-[border-color,transform] duration-base hover:-translate-y-0.5 hover:border-oxide">
                   {industry.image ? (
-                    <div
-                      className={`relative aspect-video overflow-hidden rounded-md ${index === 0 ? "sm:aspect-[4/1]" : ""}`}
-                    >
+                    <div className="relative aspect-video overflow-hidden rounded-md">
                       <Image
                         src={industry.image}
                         alt=""
                         fill
-                        sizes={
-                          index === 0
-                            ? "(min-width: 1024px) 66vw, 100vw"
-                            : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        }
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                         className="object-cover"
                       />
                     </div>
