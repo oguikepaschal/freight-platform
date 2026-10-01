@@ -1,4 +1,4 @@
-import { and, arrayContains, asc, count, desc, eq, ilike, or } from "drizzle-orm";
+import { and, arrayContains, asc, count, desc, eq, ilike, isNull, or } from "drizzle-orm";
 
 import { getDb } from "./client";
 import * as schema from "./schema";
@@ -933,6 +933,29 @@ export async function createContactInquiry(input: CreateContactInquiryInput): Pr
   });
 }
 
+/** Response target for an unhandled inquiry, wall-clock hours from createdAt. */
+export const INQUIRY_SLA_HOURS = 24;
+
+export type InquiryStatus = "handled" | "overdue" | "new";
+
+/**
+ * The only place inquiry status is derived — UI code calls this rather than
+ * re-checking handledAt or the clock itself.
+ */
+export function getInquiryStatus(
+  inquiry: Pick<ContactInquiry, "handledAt" | "createdAt">,
+  now: Date,
+): InquiryStatus {
+  if (inquiry.handledAt !== null) return "handled";
+  const ageMs = now.getTime() - inquiry.createdAt.getTime();
+  return ageMs > INQUIRY_SLA_HOURS * 60 * 60 * 1000 ? "overdue" : "new";
+}
+
+export type ContactInquiryWithAssignee = ContactInquiry & {
+  assigneeName: string | null;
+  assigneeEmail: string | null;
+};
+
 /**
  * Every /contact submission, most recent first — unlike
  * listCustomersWithShipmentCounts, this table does have a real recency
@@ -940,10 +963,24 @@ export async function createContactInquiry(input: CreateContactInquiryInput): Pr
  * pagination — same dataset-size assumption as every other admin list in
  * this codebase (listShipments, listCustomersWithShipmentCounts).
  */
-export async function listContactInquiries(): Promise<ContactInquiry[]> {
+export async function listContactInquiries(): Promise<ContactInquiryWithAssignee[]> {
   const db = getDb();
 
-  return db.select().from(schema.contactInquiries).orderBy(desc(schema.contactInquiries.createdAt));
+  const rows = await db
+    .select({
+      inquiry: schema.contactInquiries,
+      assigneeName: schema.staff.name,
+      assigneeEmail: schema.staff.email,
+    })
+    .from(schema.contactInquiries)
+    .leftJoin(schema.staff, eq(schema.contactInquiries.assignedTo, schema.staff.id))
+    .orderBy(desc(schema.contactInquiries.createdAt));
+
+  return rows.map(({ inquiry, assigneeName, assigneeEmail }) => ({
+    ...inquiry,
+    assigneeName,
+    assigneeEmail,
+  }));
 }
 
 /**
@@ -951,16 +988,23 @@ export async function listContactInquiries(): Promise<ContactInquiry[]> {
  * Returns null if not found — same notFound() trigger pattern as every
  * other admin detail page (getShipmentWithEvents, getCustomerById).
  */
-export async function getContactInquiryById(id: number): Promise<ContactInquiry | null> {
+export async function getContactInquiryById(
+  id: number,
+): Promise<ContactInquiryWithAssignee | null> {
   const db = getDb();
 
-  const [inquiry] = await db
-    .select()
+  const [row] = await db
+    .select({
+      inquiry: schema.contactInquiries,
+      assigneeName: schema.staff.name,
+      assigneeEmail: schema.staff.email,
+    })
     .from(schema.contactInquiries)
+    .leftJoin(schema.staff, eq(schema.contactInquiries.assignedTo, schema.staff.id))
     .where(eq(schema.contactInquiries.id, id))
     .limit(1);
 
-  return inquiry ?? null;
+  return row ? { ...row.inquiry, assigneeName: row.assigneeName, assigneeEmail: row.assigneeEmail } : null;
 }
 
 /**
@@ -969,11 +1013,33 @@ export async function getContactInquiryById(id: number): Promise<ContactInquiry 
  * behind the (authenticated) staff layout, and any staff member can
  * legitimately act on any inquiry, not just ones tied to their own account.
  */
-export async function markContactInquiryHandled(id: number): Promise<void> {
+export async function markContactInquiryHandled(id: number): Promise<boolean> {
   const db = getDb();
 
-  await db
+  // The IS NULL guard keeps handled_at (which stops the SLA clock) from
+  // being overwritten by a repeat call. Returns whether a row changed.
+  const updated = await db
     .update(schema.contactInquiries)
     .set({ handledAt: new Date() })
-    .where(eq(schema.contactInquiries.id, id));
+    .where(and(eq(schema.contactInquiries.id, id), isNull(schema.contactInquiries.handledAt)))
+    .returning({ id: schema.contactInquiries.id });
+
+  return updated.length > 0;
+}
+
+/**
+ * Assigns an unhandled inquiry to a staff member. Reassigning to a
+ * different staff member is allowed; a handled inquiry is left alone.
+ * Returns whether a row changed.
+ */
+export async function assignContactInquiry(id: number, staffId: string): Promise<boolean> {
+  const db = getDb();
+
+  const updated = await db
+    .update(schema.contactInquiries)
+    .set({ assignedTo: staffId, assignedAt: new Date() })
+    .where(and(eq(schema.contactInquiries.id, id), isNull(schema.contactInquiries.handledAt)))
+    .returning({ id: schema.contactInquiries.id });
+
+  return updated.length > 0;
 }
