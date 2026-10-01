@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { Badge, Table } from "@freight/ui";
 import type { Column } from "@freight/ui";
-import { getInquiryStatus } from "@freight/database";
-import type { ContactInquiryWithAssignee } from "@freight/database";
+import type { ContactInquiryWithAssignee, InquiryStatus } from "@freight/database";
 
 import { formatDate } from "@/lib/shipment-labels";
 import { serviceLabel } from "./inquiry-labels";
@@ -12,12 +11,14 @@ import { serviceLabel } from "./inquiry-labels";
 // Table's render/rowKey props are functions, which can't cross the
 // server/client boundary as serialized props — so the column config lives
 // here, inside the client component, rather than in the server page above.
-function formatAge(createdAt: Date): string {
-  const hours = Math.floor((Date.now() - createdAt.getTime()) / (60 * 60 * 1000));
-  return hours < 48 ? `${Math.max(hours, 0)}h` : `${Math.floor(hours / 24)}d`;
-}
+// Status and age are computed once in the server page (one shared `now`) so
+// this client component never reads the clock and can't hydrate differently.
+export type InquiryRow = ContactInquiryWithAssignee & {
+  status: InquiryStatus;
+  ageLabel: string;
+};
 
-const columns: Column<ContactInquiryWithAssignee>[] = [
+const columns: Column<InquiryRow>[] = [
   {
     key: "name",
     header: "Name",
@@ -65,7 +66,7 @@ const columns: Column<ContactInquiryWithAssignee>[] = [
     key: "age",
     header: "Age",
     type: "data",
-    render: (row) => formatAge(row.createdAt),
+    render: (row) => row.ageLabel,
   },
   {
     key: "status",
@@ -74,15 +75,14 @@ const columns: Column<ContactInquiryWithAssignee>[] = [
     // badge. The Badge union has no warning variant; "neutral" is what
     // STATUS_BADGE_VARIANTS already uses for the shipment "delayed" state.
     render: (row) => {
-      const status = getInquiryStatus(row, new Date());
-      if (status === "overdue") return <Badge variant="neutral">Overdue</Badge>;
-      if (status === "new") return <Badge variant="in-transit">New</Badge>;
+      if (row.status === "overdue") return <Badge variant="neutral">Overdue</Badge>;
+      if (row.status === "new") return <Badge variant="in-transit">New</Badge>;
       return null;
     },
   },
 ];
 
-export function ContactInquiriesTable({ inquiries }: { inquiries: ContactInquiryWithAssignee[] }) {
+export function ContactInquiriesTable({ inquiries }: { inquiries: InquiryRow[] }) {
   return (
     <Table
       columns={columns}
