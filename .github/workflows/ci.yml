@@ -104,6 +104,19 @@ jobs:
           curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches/$DEV/databases" | python3 -c "import sys,json; print('dbs',[d['name'] for d in json.load(sys.stdin).get('databases',[])])"
           curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches/$DEV/roles" | python3 -c "import sys,json; print('roles',[d['name'] for d in json.load(sys.stdin).get('roles',[])])"
 
+      - name: Debug raw create
+        continue-on-error: true
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+        run: |
+          B="https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches"
+          DEV=$(curl -s -H "Authorization: Bearer $NEON_API_KEY" "$B" | python3 -c "import sys,json; print([b['id'] for b in json.load(sys.stdin)['branches'] if b['name']=='dev'][0])")
+          RES=$(curl -s -X POST -H "Authorization: Bearer $NEON_API_KEY" -H "Content-Type: application/json" "$B" -d "{\"branch\":{\"name\":\"ci-debug-$GITHUB_RUN_ID\",\"parent_id\":\"$DEV\"},\"endpoints\":[{\"type\":\"read_write\"}]}")
+          echo "$RES" | python3 -c "import sys,json; d=json.load(sys.stdin); print('code',d.get('code'),'msg',d.get('message'),'branch',(d.get('branch') or {}).get('id'))"
+          NEW=$(echo "$RES" | python3 -c "import sys,json; print((json.load(sys.stdin).get('branch') or {}).get('id',''))")
+          if [ -n "$NEW" ]; then curl -s -X DELETE -H "Authorization: Bearer $NEON_API_KEY" "$B/$NEW" >/dev/null; echo deleted; fi
+
       - name: Create Neon branch
         id: neon
         uses: neondatabase/create-branch-action@v6
