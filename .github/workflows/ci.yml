@@ -109,7 +109,6 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
           parent_branch: dev
           branch_name: ci-${{ github.run_id }}-${{ github.run_attempt }}
-          expires_at: ${{ env.BRANCH_EXPIRES_AT }}
 
       # Belt and braces: mask both connection strings before any later step
       # can print them. Passed via env so they never appear in a command line.
