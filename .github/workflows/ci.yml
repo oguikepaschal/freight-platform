@@ -104,6 +104,13 @@ jobs:
           curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches/$DEV/databases" | python3 -c "import sys,json; print('dbs',[d['name'] for d in json.load(sys.stdin).get('databases',[])])"
           curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches/$DEV/roles" | python3 -c "import sys,json; print('roles',[d['name'] for d in json.load(sys.stdin).get('roles',[])])"
 
+      - name: Debug dev expiry
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+        run: |
+          curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches" | python3 -c "import sys,json; print('devexpiry',[(b['name'],b.get('expires_at')) for b in json.load(sys.stdin)['branches']])"
+
       - name: Debug raw create
         continue-on-error: true
         env:
