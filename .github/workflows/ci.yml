@@ -99,7 +99,10 @@ jobs:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
           NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
         run: |
-          curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('message') or [(b['name'],b.get('default'),b.get('protected')) for b in d['branches']])"
+          curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('message') or [(b['name'],b['id']) for b in d['branches']])"
+          DEV=$(curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches" | python3 -c "import sys,json; print([b['id'] for b in json.load(sys.stdin)['branches'] if b['name']=='dev'][0])")
+          curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches/$DEV/databases" | python3 -c "import sys,json; print('dbs',[d['name'] for d in json.load(sys.stdin).get('databases',[])])"
+          curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches/$DEV/roles" | python3 -c "import sys,json; print('roles',[d['name'] for d in json.load(sys.stdin).get('roles',[])])"
 
       - name: Create Neon branch
         id: neon
