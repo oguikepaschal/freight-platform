@@ -93,6 +93,14 @@ jobs:
       - name: Compute branch expiry
         run: echo "BRANCH_EXPIRES_AT=$(date -u --date '+2 hours' +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
 
+      # TEMP DIAGNOSTIC (remove): names/ids only, no connection strings.
+      - name: Debug list branches
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+        run: |
+          curl -s -H "Authorization: Bearer $NEON_API_KEY" "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('message') or [(b['name'],b.get('default'),b.get('protected')) for b in d['branches']])"
+
       - name: Create Neon branch
         id: neon
         uses: neondatabase/create-branch-action@v6
