@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Card, Input, buttonClassName } from "@freight/ui";
 
+import { requireAdmin } from "@/auth";
 import { createShipmentAction } from "./actions";
 import { CustomerPicker } from "./CustomerPicker";
 
@@ -9,8 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NewShipmentPage() {
-  // The (authenticated) layout above already redirects unauthenticated
-  // requests before this page renders.
+  await requireAdmin();
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-comfortable px-comfortable py-expansive">
       <header className="flex flex-col gap-tight">

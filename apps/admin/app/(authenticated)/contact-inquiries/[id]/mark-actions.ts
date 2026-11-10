@@ -3,16 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { assignContactInquiry, markContactInquiryHandled } from "@freight/database";
 
-import { auth } from "@/auth";
+import { requireAdmin } from "@/auth";
 
 // Server actions are reachable directly (not gated by the page render), so
 // this re-checks auth itself — same pattern as every other action in this
 // codebase.
 export async function markContactInquiryHandledAction(inquiryId: number): Promise<void> {
-  const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  await requireAdmin();
 
   await markContactInquiryHandled(inquiryId);
 
@@ -21,10 +18,7 @@ export async function markContactInquiryHandledAction(inquiryId: number): Promis
 }
 
 export async function assignToMeAction(inquiryId: number): Promise<void> {
-  const session = await auth();
-  if (!session?.user?.id) {
-    throw new Error("Unauthorized");
-  }
+  const session = await requireAdmin();
 
   await assignContactInquiry(inquiryId, session.user.id);
 

@@ -9,7 +9,7 @@ import {
 } from "@freight/database";
 import type { TrackingEvent } from "@freight/database";
 
-import { auth } from "@/auth";
+import { requireAdmin } from "@/auth";
 
 const EVENT_TYPES = new Set<TrackingEvent["eventType"]>([
   "arrival",
@@ -39,10 +39,7 @@ function isResumeTargetStatus(value: string): value is ResumeTargetStatus {
 // Server actions are reachable directly (not gated by the page render), so
 // this re-checks auth itself rather than trusting the form that called it.
 export async function logTrackingEvent(formData: FormData): Promise<void> {
-  const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  await requireAdmin();
 
   const referenceNumber = String(formData.get("referenceNumber") ?? "");
   const eventTypeRaw = String(formData.get("eventType") ?? "");
@@ -81,10 +78,7 @@ export async function logTrackingEvent(formData: FormData): Promise<void> {
 // Server actions are reachable directly (not gated by the page render), so
 // this re-checks auth itself rather than trusting the form that called it.
 export async function markDelayed(formData: FormData): Promise<void> {
-  const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  await requireAdmin();
 
   const referenceNumber = String(formData.get("referenceNumber") ?? "");
   const description = String(formData.get("description") ?? "").trim();
@@ -106,10 +100,7 @@ export async function markDelayed(formData: FormData): Promise<void> {
 // Server actions are reachable directly (not gated by the page render), so
 // this re-checks auth itself rather than trusting the form that called it.
 export async function resumeStatus(formData: FormData): Promise<void> {
-  const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  await requireAdmin();
 
   const referenceNumber = String(formData.get("referenceNumber") ?? "");
   const newStatusRaw = String(formData.get("newStatus") ?? "");

@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createShipment, searchCustomersByEmail } from "@freight/database";
 import type { CustomerSummary, Shipment } from "@freight/database";
 
-import { auth } from "@/auth";
+import { requireAdmin } from "@/auth";
 
 const TRANSPORT_MODES = new Set<NonNullable<Shipment["transportMode"]>>([
   "sea",
@@ -21,10 +21,7 @@ function isTransportMode(value: string): value is NonNullable<Shipment["transpor
 // this re-checks auth itself rather than trusting the form that called it —
 // same pattern as logTrackingEvent in ../[reference]/actions.ts.
 export async function createShipmentAction(formData: FormData): Promise<void> {
-  const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  await requireAdmin();
 
   const origin = String(formData.get("origin") ?? "").trim();
   const destination = String(formData.get("destination") ?? "").trim();
@@ -60,10 +57,7 @@ export async function createShipmentAction(formData: FormData): Promise<void> {
 // Called from the client-side customer picker as it types — re-checks auth
 // for the same reason createShipmentAction does.
 export async function searchCustomers(query: string): Promise<CustomerSummary[]> {
-  const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  await requireAdmin();
 
   return searchCustomersByEmail(query);
 }

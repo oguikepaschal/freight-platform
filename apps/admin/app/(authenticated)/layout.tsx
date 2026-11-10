@@ -1,14 +1,10 @@
-import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { AppShell } from "@freight/ui";
 
-import { auth, signOut } from "@/auth";
+import { requireAdmin, signOut } from "@/auth";
 
 export default async function AuthenticatedLayout({ children }: { children: ReactNode }) {
-  const session = await auth();
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
+  const session = await requireAdmin();
 
   return (
     <AppShell

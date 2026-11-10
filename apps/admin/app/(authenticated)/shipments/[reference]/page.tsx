@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Badge, Card, Input, buttonClassName } from "@freight/ui";
 import { getShipmentIdByReference, getShipmentWithEvents, listDocumentsForShipment } from "@freight/database";
 
+import { requireAdmin } from "@/auth";
 import { DOCUMENT_TYPE_LABELS, EVENT_TYPE_LABELS, STATUS_BADGE_VARIANTS, STATUS_LABELS, formatDate } from "@/lib/shipment-labels";
 import { logTrackingEvent, markDelayed, resumeStatus } from "./actions";
 import { uploadDocument } from "./document-actions";
@@ -26,8 +27,7 @@ export default async function ShipmentDetailPage({
 }: {
   params: Promise<{ reference: string }>;
 }) {
-  // The (authenticated) layout above already redirects unauthenticated
-  // requests before this page renders.
+  await requireAdmin();
   const { reference } = await params;
   // getShipmentWithEvents strips the internal id from its return value (see
   // its own doc comment) — resolved separately here since the documents

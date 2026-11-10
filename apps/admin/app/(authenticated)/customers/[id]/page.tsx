@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Card } from "@freight/ui";
 import { getCustomerById, listShipmentsForCustomer } from "@freight/database";
 
+import { requireAdmin } from "@/auth";
 import { ShipmentsTable } from "../../shipments/ShipmentsTable";
 
 export const metadata: Metadata = {
@@ -14,8 +15,7 @@ export default async function CustomerDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // The (authenticated) layout above already redirects unauthenticated
-  // requests before this page renders.
+  await requireAdmin();
   const { id } = await params;
   const customer = await getCustomerById(id);
 

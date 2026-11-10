@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Card, buttonClassName } from "@freight/ui";
 import { listShipments } from "@freight/database";
 
+import { requireAdmin } from "@/auth";
 import { ShipmentsTable } from "./ShipmentsTable";
 
 export const metadata: Metadata = {
@@ -10,8 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ShipmentsPage() {
-  // The (authenticated) layout above already redirects unauthenticated
-  // requests before this page renders.
+  await requireAdmin();
   const shipments = await listShipments();
 
   return (
