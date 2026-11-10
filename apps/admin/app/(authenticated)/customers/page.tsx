@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Card } from "@freight/ui";
 import { listCustomersWithShipmentCounts } from "@freight/database";
 
+import { requireAdmin } from "@/auth";
 import { CustomersTable } from "./CustomersTable";
 
 export const metadata: Metadata = {
@@ -9,8 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CustomersPage() {
-  // The (authenticated) layout above already redirects unauthenticated
-  // requests before this page renders.
+  await requireAdmin();
   const customers = await listCustomersWithShipmentCounts();
 
   return (

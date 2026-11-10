@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Badge, Card } from "@freight/ui";
 import { getContactInquiryById, getInquiryStatus } from "@freight/database";
 
-import { auth } from "@/auth";
+import { requireAdmin } from "@/auth";
 import { formatDate } from "@/lib/shipment-labels";
 import { industryLabel, serviceLabel, SHIPMENT_TYPE_LABELS } from "../inquiry-labels";
 import { AssignToMeButton } from "./AssignToMeButton";
@@ -28,8 +28,7 @@ export default async function ContactInquiryDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // The (authenticated) layout above already redirects unauthenticated
-  // requests before this page renders.
+  const session = await requireAdmin();
   const { id } = await params;
   const inquiryId = Number(id);
   const inquiry = Number.isNaN(inquiryId) ? null : await getContactInquiryById(inquiryId);
@@ -38,10 +37,9 @@ export default async function ContactInquiryDetailPage({
     notFound();
   }
 
-  const session = await auth();
   const status = getInquiryStatus(inquiry, new Date());
   const unhandled = status !== "handled";
-  const assignedToMe = inquiry.assignedTo !== null && inquiry.assignedTo === session?.user?.id;
+  const assignedToMe = inquiry.assignedTo !== null && inquiry.assignedTo === session.user.id;
   // A service or industry slug is what makes an inquiry a shipment inquiry
   // (see contact_inquiries_mode_check); general inquiries have none of these
   // fields, so the block would only be a wall of dashes.

@@ -1,12 +1,8 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { requireAdmin } from "@/auth";
 
 export default async function Page() {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
+  await requireAdmin();
 
   redirect("/shipments");
 }

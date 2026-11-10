@@ -27,7 +27,7 @@ export function DocumentsList({
     setPendingId(documentId);
     startTransition(async () => {
       try {
-        const url = await requestDocumentDownloadUrl(documentId);
+        const url = await requestDocumentDownloadUrl(documentId, referenceNumber);
         window.open(url, "_blank", "noopener,noreferrer");
       } finally {
         setPendingId(null);

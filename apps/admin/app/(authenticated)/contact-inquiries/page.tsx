@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Card } from "@freight/ui";
 import { getInquiryStatus, listContactInquiries } from "@freight/database";
 
+import { requireAdmin } from "@/auth";
 import { ContactInquiriesTable } from "./ContactInquiriesTable";
 
 export const metadata: Metadata = {
@@ -14,8 +15,7 @@ function formatAge(createdAt: Date, now: Date): string {
 }
 
 export default async function ContactInquiriesPage() {
-  // The (authenticated) layout above already redirects unauthenticated
-  // requests before this page renders.
+  await requireAdmin();
   const now = new Date();
   const inquiries = (await listContactInquiries()).map((inquiry) => ({
     ...inquiry,
